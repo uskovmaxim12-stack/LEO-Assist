@@ -7,22 +7,22 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Сброс и базовые стили */
+        /* ЭКСТРА СТИЛИ ДЛЯ ИСПРАВЛЕНИЙ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
         }
         
         body {
             background: #0a0a0a;
-            color: #ffffff;
+            color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
         
-        /* Контейнер для частиц */
+        /* Частицы на весь фон */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -42,11 +42,9 @@
             align-items: center;
         }
         
-        /* Левая панель - нейросеть */
+        /* Левая панель */
         .left-panel {
             flex: 1;
-            display: flex;
-            justify-content: center;
             padding: 40px;
         }
         
@@ -54,14 +52,9 @@
             background: rgba(15, 15, 25, 0.9);
             border-radius: 25px;
             padding: 40px;
-            width: 100%;
-            max-width: 600px;
             border: 1px solid rgba(0, 198, 255, 0.3);
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(0, 198, 255, 0.1);
-            backdrop-filter: blur(15px);
-            animation: fadeIn 1s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
         }
         
         .neural-network h1 {
@@ -71,8 +64,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
-            font-weight: 800;
-            letter-spacing: 1px;
         }
         
         .subtitle {
@@ -80,25 +71,11 @@
             text-align: center;
             margin-bottom: 40px;
             font-size: 1.1rem;
-            font-weight: 300;
         }
         
-        /* Визуализация нейросети */
-        .neural-visualization {
-            position: relative;
-            height: 250px;
-            margin: 40px 0;
-            background: rgba(0, 10, 30, 0.4);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-        
-        /* Правая панель - форма */
+        /* Правая панель */
         .right-panel {
             flex: 1;
-            display: flex;
-            justify-content: center;
             padding: 40px;
         }
         
@@ -106,17 +83,12 @@
             background: rgba(15, 15, 25, 0.9);
             border-radius: 25px;
             padding: 40px;
-            width: 100%;
-            max-width: 450px;
             border: 1px solid rgba(0, 198, 255, 0.3);
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(0, 198, 255, 0.1);
-            backdrop-filter: blur(15px);
-            animation: slideInRight 1s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
         }
         
-        /* Вкладки */
+        /* ВКЛАДКИ - ИСПРАВЛЕНО */
         .auth-tabs {
             display: flex;
             background: rgba(255, 255, 255, 0.05);
@@ -136,7 +108,7 @@
             font-weight: 600;
             cursor: pointer;
             border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -145,14 +117,13 @@
         
         .tab-btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transform: translateY(-2px);
+            color: white;
         }
         
         .tab-btn.active {
             background: linear-gradient(135deg, #00c6ff, #0072ff);
             color: white;
-            box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
         }
         
         .admin-btn {
@@ -161,17 +132,22 @@
         
         .admin-btn.active {
             background: linear-gradient(135deg, #ff6b9d, #ff2e6e);
-            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
         }
         
-        /* Формы */
+        /* ФОРМЫ - ИСПРАВЛЕНО */
         .auth-form {
             display: none;
         }
         
         .auth-form.active {
             display: block;
-            animation: fadeInUp 0.5s ease;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .auth-form h2 {
@@ -188,7 +164,7 @@
             font-size: 0.95rem;
         }
         
-        /* Поля ввода */
+        /* Поля ввода - ИСПРАВЛЕНО */
         .input-group {
             position: relative;
             margin-bottom: 25px;
@@ -209,7 +185,7 @@
             background: rgba(255, 255, 255, 0.07);
             border: 2px solid transparent;
             border-radius: 12px;
-            color: #ffffff;
+            color: white;
             font-size: 1rem;
             transition: all 0.3s;
         }
@@ -221,7 +197,20 @@
             box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.2);
         }
         
-        /* Кнопка отправки */
+        .show-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8a9bb2;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+        
+        /* Кнопки - ИСПРАВЛЕНО */
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -245,10 +234,6 @@
             box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
         }
         
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        
         .submit-btn.warning {
             background: linear-gradient(135deg, #ff6b9d, #ff2e6e);
         }
@@ -264,7 +249,6 @@
             border-radius: 12px;
             margin-top: 20px;
             font-weight: 500;
-            animation: slideInUp 0.3s ease;
         }
         
         .message-box.success {
@@ -279,25 +263,26 @@
             color: #ff4444;
         }
         
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Особенности */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 40px;
         }
         
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
         }
         
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .feature i {
+            color: #00c6ff;
+            font-size: 1.5rem;
         }
         
         /* Адаптивность */
@@ -306,49 +291,14 @@
                 flex-direction: column;
                 gap: 20px;
             }
-            
-            .left-panel, .right-panel {
-                padding: 20px;
-            }
-            
-            .neural-network, .auth-container {
-                max-width: 500px;
+            .features {
+                grid-template-columns: 1fr;
             }
         }
         
         @media (max-width: 768px) {
-            .main-container {
-                padding: 10px;
-            }
-            
-            .neural-network, .auth-container {
-                padding: 30px;
-            }
-            
-            .neural-network h1 {
-                font-size: 2.2rem;
-            }
-            
             .auth-tabs {
                 flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .neural-network, .auth-container {
-                padding: 20px;
-            }
-            
-            .neural-network h1 {
-                font-size: 1.8rem;
-            }
-            
-            .input-group input {
-                padding: 14px 14px 14px 45px;
-            }
-            
-            .submit-btn {
-                padding: 14px;
             }
         }
     </style>
@@ -364,10 +314,6 @@
             <div class="neural-network">
                 <h1><i class="fas fa-brain"></i> LEO ASSISTANT</h1>
                 <p class="subtitle">Искусственный интеллект для 7Б класса</p>
-                
-                <div class="neural-visualization">
-                    <!-- Нейроны будут созданы через particles.js -->
-                </div>
                 
                 <div class="features">
                     <div class="feature">
@@ -460,7 +406,7 @@
                         <i class="fas fa-user-plus"></i> Зарегистрироваться
                     </button>
                     
-                    <p class="form-note">
+                    <p class="form-note" style="color: #8a9bb2; font-size: 0.9rem; margin-top: 15px; text-align: center;">
                         После регистрации аккаунт нужно активировать у администратора
                     </p>
                     
@@ -496,119 +442,101 @@
     <script src="./js/particles.min.js"></script>
     <script src="./js/auth-system.js"></script>
     <script>
-        // Инициализация при загрузке
+        // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация частиц (как на вашем сайте)
-            particlesJS('particles-js', {
-                particles: {
-                    number: {
-                        value: 80,
-                        density: {
+            console.log('Страница загружена, запускаем частицы...');
+            
+            // 1. ЗАПУСК ЧАСТИЦ (как на вашем сайте)
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        color: { value: "#00c6ff" },
+                        shape: { type: "circle" },
+                        opacity: { 
+                            value: 0.5, 
+                            random: true,
+                            anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+                        },
+                        size: { 
+                            value: 3, 
+                            random: true,
+                            anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+                        },
+                        line_linked: {
                             enable: true,
-                            value_area: 800
-                        }
-                    },
-                    color: {
-                        value: ["#00c6ff", "#0072ff", "#ff6b9d"]
-                    },
-                    shape: {
-                        type: "circle",
-                        stroke: {
-                            width: 0,
-                            color: "#000000"
-                        }
-                    },
-                    opacity: {
-                        value: 0.5,
-                        random: true,
-                        anim: {
-                            enable: true,
-                            speed: 1,
-                            opacity_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    size: {
-                        value: 3,
-                        random: true,
-                        anim: {
+                            distance: 150,
+                            color: "#00c6ff",
+                            opacity: 0.2,
+                            width: 1
+                        },
+                        move: {
                             enable: true,
                             speed: 2,
-                            size_min: 0.1,
-                            sync: false
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
                         }
                     },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#00c6ff",
-                        opacity: 0.2,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false,
-                        attract: {
-                            enable: false,
-                            rotateX: 600,
-                            rotateY: 1200
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "grab" },
+                            onclick: { enable: true, mode: "push" },
+                            resize: true
                         }
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: {
-                            enable: true,
-                            mode: "grab"
-                        },
-                        onclick: {
-                            enable: true,
-                            mode: "push"
-                        },
-                        resize: true
-                    }
-                },
-                retina_detect: true
-            });
+                    },
+                    retina_detect: true
+                });
+            } else {
+                console.error('particlesJS не загружен!');
+            }
             
-            // Переключение вкладок
+            // 2. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК - РАБОЧЕЕ!
             const tabs = {
                 'login-tab': 'login-form',
-                'register-tab': 'register-form',
+                'register-tab': 'register-form', 
                 'admin-tab': 'admin-form'
             };
             
             Object.keys(tabs).forEach(tabId => {
-                document.getElementById(tabId).addEventListener('click', function() {
-                    // Убираем активный класс у всех
-                    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-                    
-                    // Добавляем активный класс текущему
-                    this.classList.add('active');
-                    document.getElementById(tabs[tabId]).classList.add('active');
-                    
-                    // Очищаем сообщения
-                    document.querySelectorAll('.message-box').forEach(m => {
-                        m.style.display = 'none';
-                        m.textContent = '';
+                const tabBtn = document.getElementById(tabId);
+                if (tabBtn) {
+                    tabBtn.addEventListener('click', function() {
+                        console.log('Нажата кнопка:', tabId);
+                        
+                        // Убираем активный класс у всех кнопок
+                        document.querySelectorAll('.tab-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        
+                        // Скрываем все формы
+                        document.querySelectorAll('.auth-form').forEach(form => {
+                            form.classList.remove('active');
+                        });
+                        
+                        // Активируем текущую кнопку
+                        this.classList.add('active');
+                        
+                        // Показываем соответствующую форму
+                        const formId = tabs[tabId];
+                        const form = document.getElementById(formId);
+                        if (form) {
+                            form.classList.add('active');
+                            console.log('Показана форма:', formId);
+                        }
                     });
-                });
+                }
             });
             
-            // Показать/скрыть пароль
-            const showPasswordBtn = document.getElementById('show-password-btn');
-            if (showPasswordBtn) {
-                showPasswordBtn.addEventListener('click', function() {
+            // 3. ПОКАЗАТЬ/СКРЫТЬ ПАРОЛЬ
+            const showPassBtn = document.getElementById('show-password-btn');
+            if (showPassBtn) {
+                showPassBtn.addEventListener('click', function() {
                     const input = document.getElementById('login-password');
                     const icon = this.querySelector('i');
-                    
                     if (input.type === 'password') {
                         input.type = 'text';
                         icon.className = 'fas fa-eye-slash';
@@ -619,19 +547,36 @@
                 });
             }
             
-            // Обработка Enter в формах
+            // 4. ENTER ДЛЯ ОТПРАВКИ ФОРМ
             document.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     const activeForm = document.querySelector('.auth-form.active');
-                    if (activeForm.id === 'login-form') {
+                    if (activeForm && activeForm.id === 'login-form') {
                         document.getElementById('login-submit').click();
-                    } else if (activeForm.id === 'register-form') {
+                    } else if (activeForm && activeForm.id === 'register-form') {
                         document.getElementById('register-submit').click();
-                    } else if (activeForm.id === 'admin-form') {
+                    } else if (activeForm && activeForm.id === 'admin-form') {
                         document.getElementById('admin-submit').click();
                     }
                 }
             });
+            
+            // 5. ПРОВЕРКА АКТИВНОЙ СЕССИИ
+            function checkActiveSession() {
+                const session = localStorage.getItem('leo_session') || sessionStorage.getItem('leo_session');
+                if (session) {
+                    try {
+                        const user = JSON.parse(session);
+                        if (user && user.active) {
+                            window.location.href = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+                        }
+                    } catch (e) {
+                        console.log('Ошибка чтения сессии:', e);
+                    }
+                }
+            }
+            
+            checkActiveSession();
         });
     </script>
 </body>
