@@ -1,19 +1,22 @@
-// auth-system.js - ПОЛНОСТЬЮ РАБОЧАЯ СИСТЕМА АВТОРИЗАЦИИ
+// auth-system.js - РАБОЧАЯ СИСТЕМА АВТОРИЗАЦИИ
 class AuthSystem {
     constructor() {
+        console.log('Инициализация AuthSystem...');
         this.initDatabase();
         this.setupEventListeners();
-        this.checkSession();
     }
     
-    // Инициализация базы данных
+    // ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ
     initDatabase() {
-        // Инициализируем базу пользователей
+        console.log('Инициализация базы данных...');
+        
+        // 1. Инициализируем пользователей
         if (!localStorage.getItem('leo_users')) {
             localStorage.setItem('leo_users', JSON.stringify([]));
+            console.log('Создана пустая база пользователей');
         }
         
-        // Создаём администратора по умолчанию (скрытый)
+        // 2. Создаём администратора по умолчанию
         const users = JSON.parse(localStorage.getItem('leo_users'));
         const adminExists = users.some(u => u.username === 'admin');
         
@@ -35,94 +38,115 @@ class AuthSystem {
             
             users.push(admin);
             localStorage.setItem('leo_users', JSON.stringify(users));
+            console.log('Создан администратор по умолчанию');
         }
         
-        // Инициализация логов
+        // 3. Инициализируем логи
         if (!localStorage.getItem('leo_logs')) {
             localStorage.setItem('leo_logs', JSON.stringify([]));
         }
+        
+        console.log('База данных готова. Пользователей:', users.length);
     }
     
-    // Хэширование пароля
+    // ХЭШИРОВАНИЕ ПАРОЛЯ
     hashPassword(password) {
-        // Простое хэширование для демонстрации
+        // Простое хэширование для демо
         let hash = 0;
         for (let i = 0; i < password.length; i++) {
             const char = password.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;
         }
-        return Math.abs(hash).toString(36);
+        return Math.abs(hash).toString(36) + 'leo';
     }
     
-    // Настройка обработчиков событий
+    // НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ
     setupEventListeners() {
-        // Вход
-        document.getElementById('login-submit')?.addEventListener('click', () => this.login());
+        console.log('Настройка обработчиков событий...');
         
-        // Регистрация
-        document.getElementById('register-submit')?.addEventListener('click', () => this.register());
-        
-        // Админ вход
-        document.getElementById('admin-submit')?.addEventListener('click', () => this.adminLogin());
-    }
-    
-    // Проверка активной сессии
-    checkSession() {
-        const session = localStorage.getItem('leo_session') || sessionStorage.getItem('leo_session');
-        if (session) {
-            try {
-                const user = JSON.parse(session);
-                if (user && user.active) {
-                    // Автоматический редирект на соответствующую страницу
-                    setTimeout(() => {
-                        window.location.href = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
-                    }, 500);
-                }
-            } catch (e) {
-                console.log('Ошибка чтения сессии:', e);
-            }
+        // 1. КНОПКА ВХОДА
+        const loginBtn = document.getElementById('login-submit');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Нажата кнопка входа');
+                this.login();
+            });
         }
+        
+        // 2. КНОПКА РЕГИСТРАЦИИ
+        const registerBtn = document.getElementById('register-submit');
+        if (registerBtn) {
+            registerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Нажата кнопка регистрации');
+                this.register();
+            });
+        }
+        
+        // 3. КНОПКА АДМИНА
+        const adminBtn = document.getElementById('admin-submit');
+        if (adminBtn) {
+            adminBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Нажата кнопка админа');
+                this.adminLogin();
+            });
+        }
+        
+        console.log('Обработчики событий настроены');
     }
     
-    // Вход в систему
+    // ВХОД В СИСТЕМУ
     login() {
+        console.log('Запуск процесса входа...');
+        
         const username = document.getElementById('login-username').value.trim();
         const password = document.getElementById('login-password').value;
         
+        console.log('Логин:', username, 'Пароль:', password ? '***' : 'пустой');
+        
+        // ВАЛИДАЦИЯ
         if (!username || !password) {
             this.showMessage('Заполните все поля', 'error', 'auth-message');
             return;
         }
         
-        // Получаем пользователя из базы
+        // ПОИСК ПОЛЬЗОВАТЕЛЯ
         const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
         const hashedPassword = this.hashPassword(password);
         const user = users.find(u => u.username === username && u.password === hashedPassword);
         
+        console.log('Найден пользователь:', user ? 'да' : 'нет');
+        
         if (user) {
             if (user.active) {
-                // Обновляем время последнего входа
+                // ОБНОВЛЯЕМ ВРЕМЯ ВХОДА
                 user.lastLogin = new Date().toISOString();
                 
-                // Сохраняем изменения
+                // СОХРАНЯЕМ ИЗМЕНЕНИЯ
                 const userIndex = users.findIndex(u => u.id === user.id);
                 if (userIndex !== -1) {
                     users[userIndex] = user;
                     localStorage.setItem('leo_users', JSON.stringify(users));
                 }
                 
-                // Сохраняем сессию
+                // СОХРАНЯЕМ СЕССИЮ
                 localStorage.setItem('leo_session', JSON.stringify(user));
+                console.log('Сессия сохранена для пользователя:', user.username);
                 
-                this.showMessage('Вход выполнен успешно!', 'success', 'auth-message');
+                // ПОКАЗЫВАЕМ УСПЕХ
+                this.showMessage('Вход выполнен успешно! Перенаправление...', 'success', 'auth-message');
                 
-                // Логируем вход
+                // ЛОГИРУЕМ
                 this.logActivity(`${user.fullname} вошёл в систему`, 'login');
                 
-                // Перенаправляем через 1 секунду
+                // ПЕРЕНАПРАВЛЯЕМ
                 setTimeout(() => {
-                    window.location.href = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+                    const redirectTo = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+                    console.log('Перенаправление на:', redirectTo);
+                    window.location.href = redirectTo;
                 }, 1000);
                 
             } else {
@@ -133,14 +157,18 @@ class AuthSystem {
         }
     }
     
-    // Регистрация нового пользователя
+    // РЕГИСТРАЦИЯ
     register() {
+        console.log('Запуск процесса регистрации...');
+        
         const fullname = document.getElementById('reg-fullname').value.trim();
         const username = document.getElementById('reg-username').value.trim();
         const password = document.getElementById('reg-password').value;
         const confirmPassword = document.getElementById('reg-password-confirm').value;
         
-        // Валидация
+        console.log('Регистрация:', { fullname, username });
+        
+        // ВАЛИДАЦИЯ
         if (!fullname || !username || !password || !confirmPassword) {
             this.showMessage('Заполните все поля', 'error', 'reg-message');
             return;
@@ -156,14 +184,14 @@ class AuthSystem {
             return;
         }
         
-        // Проверка уникальности логина
+        // ПРОВЕРКА УНИКАЛЬНОСТИ
         const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
         if (users.some(u => u.username === username)) {
             this.showMessage('Этот логин уже занят', 'error', 'reg-message');
             return;
         }
         
-        // Создание нового пользователя
+        // СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ
         const newUser = {
             id: Date.now(),
             fullname: fullname,
@@ -174,7 +202,7 @@ class AuthSystem {
             points: 0,
             level: 1,
             avatar: this.generateAvatar(fullname),
-            active: false, // Требует активации администратором
+            active: false, // Требует активации
             registeredAt: new Date().toISOString(),
             lastLogin: null,
             gameStats: {
@@ -183,16 +211,18 @@ class AuthSystem {
             }
         };
         
-        // Сохраняем пользователя
+        // СОХРАНЕНИЕ
         users.push(newUser);
         localStorage.setItem('leo_users', JSON.stringify(users));
+        console.log('Пользователь зарегистрирован:', newUser.username);
         
-        this.showMessage('Регистрация успешна! Обратитесь к администратору для активации аккаунта.', 'success', 'reg-message');
+        // УСПЕШНОЕ СООБЩЕНИЕ
+        this.showMessage('Регистрация успешна! Обратитесь к администратору для активации.', 'success', 'reg-message');
         
-        // Логируем регистрацию
+        // ЛОГИРОВАНИЕ
         this.logActivity(`Зарегистрирован новый пользователь: ${fullname}`, 'register');
         
-        // Очищаем форму
+        // ОЧИСТКА ФОРМЫ И ПЕРЕКЛЮЧЕНИЕ
         setTimeout(() => {
             document.getElementById('reg-fullname').value = '';
             document.getElementById('reg-username').value = '';
@@ -204,32 +234,36 @@ class AuthSystem {
         }, 2000);
     }
     
-    // Вход администратора
+    // ВХОД АДМИНИСТРАТОРА
     adminLogin() {
+        console.log('Запуск входа администратора...');
+        
         const key = document.getElementById('admin-key').value.trim();
         const password = document.getElementById('admin-password').value;
         
-        // Проверяем административный ключ (по умолчанию)
+        // ПРОВЕРКА КЛЮЧА (по умолчанию)
         if (key !== 'LEO7B2024') {
             this.showMessage('Неверный административный ключ', 'error', 'admin-message');
             return;
         }
         
-        // Ищем администратора
+        // ПОИСК АДМИНА
         const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
         const hashedPassword = this.hashPassword(password);
         const admin = users.find(u => u.username === 'admin' && u.password === hashedPassword);
         
         if (admin) {
-            // Сохраняем сессию
+            // СОХРАНЯЕМ СЕССИЮ
             localStorage.setItem('leo_session', JSON.stringify(admin));
+            console.log('Администратор вошёл в систему');
             
-            this.showMessage('Доступ предоставлен', 'success', 'admin-message');
+            // ПОКАЗЫВАЕМ УСПЕХ
+            this.showMessage('Доступ предоставлен. Перенаправление...', 'success', 'admin-message');
             
-            // Логируем вход администратора
+            // ЛОГИРУЕМ
             this.logActivity('Вход администратора в систему', 'admin');
             
-            // Перенаправляем на админ-панель
+            // ПЕРЕНАПРАВЛЯЕМ
             setTimeout(() => {
                 window.location.href = 'admin.html';
             }, 1000);
@@ -238,7 +272,7 @@ class AuthSystem {
         }
     }
     
-    // Генерация аватара из инициалов
+    // ГЕНЕРАЦИЯ АВАТАРА
     generateAvatar(fullname) {
         const names = fullname.split(' ');
         if (names.length >= 2) {
@@ -247,16 +281,21 @@ class AuthSystem {
         return fullname.substring(0, 2).toUpperCase();
     }
     
-    // Показ сообщений
+    // ПОКАЗ СООБЩЕНИЙ
     showMessage(text, type = 'info', elementId = 'auth-message') {
         const messageBox = document.getElementById(elementId);
-        if (!messageBox) return;
+        if (!messageBox) {
+            console.error('Элемент сообщения не найден:', elementId);
+            return;
+        }
         
         messageBox.textContent = text;
         messageBox.className = `message-box ${type}`;
         messageBox.style.display = 'block';
         
-        // Автоскрытие через 5 секунд
+        console.log('Показано сообщение:', type, text);
+        
+        // АВТОСКРЫТИЕ
         setTimeout(() => {
             messageBox.style.opacity = '0';
             setTimeout(() => {
@@ -266,7 +305,7 @@ class AuthSystem {
         }, 5000);
     }
     
-    // Логирование действий
+    // ЛОГИРОВАНИЕ
     logActivity(action, type) {
         const logs = JSON.parse(localStorage.getItem('leo_logs') || '[]');
         
@@ -277,15 +316,14 @@ class AuthSystem {
             ip: 'local'
         });
         
-        // Сохраняем только последние 100 записей
-        if (logs.length > 100) {
-            logs.shift();
-        }
+        // Храним только последние 100 записей
+        if (logs.length > 100) logs.shift();
         
         localStorage.setItem('leo_logs', JSON.stringify(logs));
+        console.log('Записано действие в лог:', action);
     }
     
-    // Выход из системы
+    // ВЫХОД
     logout() {
         localStorage.removeItem('leo_session');
         sessionStorage.removeItem('leo_session');
@@ -293,13 +331,8 @@ class AuthSystem {
     }
 }
 
-// Инициализация при загрузке страницы
-window.authSystem = null;
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM загружен, запускаем AuthSystem...');
     window.authSystem = new AuthSystem();
-    
-    // Также делаем функции глобально доступными для onclick
-    window.loginUser = () => window.authSystem.login();
-    window.registerUser = () => window.authSystem.register();
-    window.loginAdmin = () => window.authSystem.adminLogin();
 });
