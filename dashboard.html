@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEO ASSIST - Панель ученика</title>
+    <title>Leo Assistant - Панель ученика</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Дополнительные стили для дашборда */
         :root {
             --sidebar-width: 280px;
-            --primary: #00c6ff;
-            --primary-dark: #0072ff;
-            --secondary: #ff6b9d;
-            --accent: #00ff88;
-            --dark: #0a0a0a;
-            --dark-blue: #0a0a2a;
-            --card-bg: rgba(15, 15, 30, 0.9);
-            --card-border: rgba(0, 198, 255, 0.3);
+            --header-height: 80px;
+            --card-radius: 20px;
+            --transition: all 0.3s ease;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
         
         body {
-            background: var(--dark);
-            color: white;
+            background: #0a0a0a;
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -38,24 +33,25 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--dark) 100%);
+            background: linear-gradient(135deg, #0a0a2a 0%, #0a0a0a 100%);
             z-index: -1;
         }
         
+        /* Контейнер дашборда */
         .dashboard-container {
             display: flex;
             min-height: 100vh;
         }
         
-        /* ===== САЙДБАР ===== */
+        /* Сайдбар */
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--card-bg);
-            border-right: 1px solid var(--card-border);
+            background: rgba(15, 15, 25, 0.95);
+            border-right: 1px solid rgba(0, 198, 255, 0.2);
             display: flex;
             flex-direction: column;
-            backdrop-filter: blur(20px);
-            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
         }
         
         .sidebar-header {
@@ -71,31 +67,31 @@
         }
         
         .user-avatar {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             border: 3px solid rgba(255, 255, 255, 0.2);
         }
         
         .user-info h3 {
             margin: 0 0 5px;
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 16px;
+            color: white;
         }
         
         .user-class {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 10px;
             background: rgba(0, 198, 255, 0.1);
-            color: var(--primary);
-            border-radius: 15px;
+            color: #00c6ff;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
         }
@@ -103,38 +99,30 @@
         .user-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
         }
         
         .stat {
             text-align: center;
-            padding: 15px 10px;
+            padding: 12px 8px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s;
-        }
-        
-        .stat:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-3px);
+            border-radius: 10px;
         }
         
         .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00c6ff;
+            margin-bottom: 3px;
         }
         
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #8a9bb2;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
+        /* Навигация */
         .sidebar-nav {
             flex: 1;
             padding: 25px 0;
@@ -144,55 +132,42 @@
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px 25px;
+            gap: 12px;
+            padding: 14px 25px;
             color: #8a9bb2;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-left: 4px solid transparent;
-            margin: 5px 0;
-            cursor: pointer;
         }
         
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.05);
             color: white;
-            border-left-color: rgba(0, 198, 255, 0.5);
         }
         
         .nav-item.active {
             background: rgba(0, 198, 255, 0.1);
             color: white;
-            border-left-color: var(--primary);
+            border-left-color: #00c6ff;
         }
         
         .nav-item i {
             width: 20px;
             text-align: center;
-            font-size: 18px;
         }
         
-        .level-progress {
-            padding: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .badge {
+            margin-left: auto;
+            background: #ff6b9d;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
         }
         
-        .progress-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            border-radius: 3px;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
+        /* Футер сайдбара */
         .sidebar-footer {
             padding: 20px 25px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -201,23 +176,19 @@
         }
         
         .btn-icon {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: none;
             color: #8a9bb2;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .btn-icon:hover {
             background: rgba(255, 255, 255, 0.12);
             color: white;
-            transform: translateY(-3px);
         }
         
         .btn-icon.logout:hover {
@@ -225,7 +196,7 @@
             color: #ff4444;
         }
         
-        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        /* Основной контент */
         .main-content {
             flex: 1;
             display: flex;
@@ -235,19 +206,19 @@
         
         .main-header {
             padding: 25px 40px;
-            background: rgba(15, 15, 30, 0.9);
+            background: rgba(15, 15, 25, 0.9);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
         }
         
         .header-left h1 {
             margin: 0 0 8px;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -258,29 +229,50 @@
             font-size: 14px;
         }
         
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
         .datetime {
             text-align: right;
         }
         
-        .datetime .time {
-            font-size: 28px;
+        .time {
+            font-size: 24px;
             font-weight: 600;
-            color: var(--primary);
+            color: #00c6ff;
             margin-bottom: 2px;
         }
         
-        .datetime .date {
+        .date {
             font-size: 14px;
             color: #8a9bb2;
         }
         
-        /* ===== КОНТЕНТ ===== */
+        /* Контентная область */
         .content-area {
             flex: 1;
             overflow-y: auto;
             padding: 30px 40px;
         }
         
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Виджеты */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -288,18 +280,17 @@
         }
         
         .widget {
-            background: rgba(20, 20, 35, 0.8);
+            background: rgba(20, 20, 30, 0.8);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .widget:hover {
             border-color: rgba(0, 198, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 198, 255, 0.1);
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
         
         .widget.large {
@@ -315,71 +306,85 @@
         }
         
         @media (max-width: 1200px) {
-            .widget.large {
-                grid-column: span 12;
-            }
-            .widget.medium {
-                grid-column: span 6;
-            }
+            .widget.large { grid-column: span 12; }
+            .widget.medium { grid-column: span 6; }
+            .widget.small { grid-column: span 4; }
+        }
+        
+        @media (max-width: 768px) {
+            .widget.large,
+            .widget.medium,
             .widget.small {
-                grid-column: span 4;
+                grid-column: span 12;
             }
         }
         
         .widget-header {
-            padding: 25px 30px;
+            padding: 20px 25px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         
         .widget-header h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         
         .widget-body {
-            padding: 30px;
+            padding: 25px;
         }
         
         /* Виджет: Сегодня */
         .today-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 25px;
         }
         
         .current-lesson {
             grid-column: span 2;
             background: rgba(0, 198, 255, 0.1);
             border: 1px solid rgba(0, 198, 255, 0.3);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .lesson-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .status-text {
+            color: #8a9bb2;
+            font-size: 14px;
+        }
+        
+        .status-time {
+            color: #00c6ff;
+            font-weight: 500;
         }
         
         .lesson-details {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
         }
         
-        .lesson-details .subject {
-            font-size: 22px;
+        .subject {
+            font-size: 20px;
             font-weight: 600;
             color: white;
         }
         
-        .lesson-details .room {
-            padding: 8px 16px;
+        .room {
+            padding: 8px 15px;
             background: rgba(0, 198, 255, 0.2);
-            color: var(--primary);
-            border-radius: 12px;
+            color: #00c6ff;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 500;
         }
@@ -388,44 +393,51 @@
         .ai-chat {
             display: flex;
             flex-direction: column;
-            height: 320px;
+            height: 300px;
         }
         
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             padding-right: 10px;
-            margin-bottom: 15px;
         }
         
         .message {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .message.ai {
+            flex-direction: row;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
         }
         
         .message .avatar {
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             flex-shrink: 0;
         }
         
         .message.user .avatar {
-            background: linear-gradient(135deg, var(--secondary), #ff2e6e);
+            background: linear-gradient(135deg, #ff6b9d, #ff2e6e);
         }
         
         .message .content {
             max-width: 70%;
             background: rgba(255, 255, 255, 0.07);
-            padding: 15px;
-            border-radius: 18px;
+            padding: 12px 15px;
+            border-radius: 15px;
         }
         
         .message.user .content {
@@ -435,18 +447,26 @@
         .message .text {
             margin: 0;
             font-size: 14px;
-            line-height: 1.4;
             color: white;
+            line-height: 1.4;
+        }
+        
+        .message .time {
+            font-size: 11px;
+            color: #8a9bb2;
+            margin-top: 5px;
+            text-align: right;
         }
         
         .chat-input {
             display: flex;
             gap: 10px;
+            margin-top: 15px;
         }
         
         .chat-input input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 12px 15px;
             background: rgba(255, 255, 255, 0.07);
             border: 2px solid transparent;
             border-radius: 12px;
@@ -456,29 +476,53 @@
         
         .chat-input input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #00c6ff;
         }
         
         .chat-input button {
-            width: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            width: 45px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             border: none;
             border-radius: 12px;
             color: white;
             cursor: pointer;
         }
         
+        .chat-input button:hover {
+            transform: scale(1.05);
+        }
+        
+        .quick-questions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-q {
+            padding: 6px 12px;
+            background: rgba(0, 198, 255, 0.1);
+            color: #00c6ff;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .quick-q:hover {
+            background: rgba(0, 198, 255, 0.2);
+        }
+        
         /* Виджет: Рейтинг */
         .rating-list {
-            max-height: 240px;
+            max-height: 250px;
             overflow-y: auto;
         }
         
         .rating-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
+            gap: 12px;
+            padding: 12px;
             margin: 8px 0;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
@@ -486,103 +530,111 @@
         
         .rating-item.current-user {
             background: rgba(0, 198, 255, 0.1);
+            border-left: 4px solid #00c6ff;
+        }
+        
+        .rating-rank {
+            font-size: 16px;
+            font-weight: 700;
+            color: #8a9bb2;
+            min-width: 25px;
         }
         
         .rating-avatar {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary), #ff2e6e);
+            background: linear-gradient(135deg, #ff6b9d, #ff2e6e);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
         }
         
-        /* Виджет: Быстрые действия */
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+        .rating-info {
+            flex: 1;
         }
         
-        .quick-action {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            padding: 25px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .quick-action:hover {
-            background: rgba(0, 198, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .quick-action i {
-            font-size: 28px;
-            color: var(--primary);
-        }
-        
-        /* Виджет: Статистика */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-        }
-        
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(0, 198, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--primary);
-        }
-        
-        .stat-data .value {
-            font-size: 24px;
-            font-weight: 700;
+        .rating-name {
+            font-size: 14px;
+            font-weight: 500;
             color: white;
             margin-bottom: 3px;
         }
         
-        /* Секции */
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
+        .rating-details {
+            display: flex;
+            gap: 12px;
         }
         
-        .content-section.active {
-            display: block;
+        .rating-level, .rating-points {
+            font-size: 11px;
+            color: #8a9bb2;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(20, 20, 30, 0.95);
+            border-left: 4px solid #00c6ff;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: slideInRight 0.3s ease;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .notification.success {
+            border-left-color: #00ff88;
+        }
+        
+        .notification.error {
+            border-left-color: #ff4444;
         }
         
         /* Адаптивность */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .user-info,
+            .user-stats,
+            .nav-item span,
+            .badge {
+                display: none;
+            }
+            
+            .user-profile {
+                justify-content: center;
+            }
+            
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+            
+            .sidebar-footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+        }
+        
         @media (max-width: 768px) {
             .dashboard-container {
                 flex-direction: column;
@@ -590,26 +642,76 @@
             
             .sidebar {
                 width: 100%;
-                height: auto;
+                height: 70px;
+                flex-direction: row;
+                padding: 0 15px;
             }
             
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+            .sidebar-header {
+                padding: 0;
+                border: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
             
-            .widget.large,
-            .widget.medium,
-            .widget.small {
-                grid-column: span 1;
+            .sidebar-nav {
+                flex: 1;
+                display: flex;
+                padding: 0;
+                overflow-x: auto;
             }
             
-            .today-info {
-                grid-template-columns: 1fr;
+            .nav-item {
+                flex-direction: column;
+                padding: 10px 12px;
+                min-width: 60px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
             }
             
-            .current-lesson {
-                grid-column: span 1;
+            .nav-item.active {
+                border-bottom-color: #00c6ff;
             }
+            
+            .sidebar-footer {
+                display: none;
+            }
+            
+            .main-header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .header-right {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+        }
+        
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 198, 255, 0.3);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 198, 255, 0.5);
         }
     </style>
 </head>
@@ -617,7 +719,7 @@
     <!-- Частицы на фоне -->
     <div id="particles-js"></div>
     
-    <!-- Главный контейнер -->
+    <!-- Контейнер дашборда -->
     <div class="dashboard-container">
         <!-- Сайдбар -->
         <aside class="sidebar">
@@ -648,49 +750,39 @@
             
             <!-- Навигация -->
             <nav class="sidebar-nav">
-                <div class="nav-item active" onclick="switchSection('dashboard')">
+                <a href="#" class="nav-item active" data-section="dashboard">
                     <i class="fas fa-home"></i>
                     <span>Главная</span>
-                </div>
-                <div class="nav-item" onclick="switchSection('schedule')">
+                </a>
+                <a href="#" class="nav-item" data-section="schedule">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Расписание</span>
-                </div>
-                <div class="nav-item" onclick="switchSection('tasks')">
+                </a>
+                <a href="#" class="nav-item" data-section="tasks">
                     <i class="fas fa-tasks"></i>
                     <span>Задания</span>
-                </div>
-                <div class="nav-item" onclick="switchSection('ai')">
+                    <span class="badge" id="tasks-badge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-section="ai">
                     <i class="fas fa-robot"></i>
                     <span>AI Помощник</span>
-                </div>
-                <div class="nav-item" onclick="switchSection('rating')">
+                </a>
+                <a href="#" class="nav-item" data-section="rating">
                     <i class="fas fa-trophy"></i>
                     <span>Рейтинг</span>
-                </div>
-                <div class="nav-item" onclick="switchSection('games')">
+                </a>
+                <a href="#" class="nav-item" data-section="games">
                     <i class="fas fa-gamepad"></i>
                     <span>Игры</span>
-                </div>
+                </a>
             </nav>
-            
-            <!-- Прогресс уровня -->
-            <div class="level-progress">
-                <div class="progress-info">
-                    <span>До уровня <span id="next-level">2</span></span>
-                    <span id="points-needed">1000 очков</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="level-progress-bar"></div>
-                </div>
-            </div>
             
             <!-- Футер сайдбара -->
             <div class="sidebar-footer">
-                <button class="btn-icon" title="Обновить" onclick="loadUserData()">
+                <button class="btn-icon" id="refresh-btn" title="Обновить">
                     <i class="fas fa-sync-alt"></i>
                 </button>
-                <button class="btn-icon logout" title="Выйти" onclick="logout()">
+                <button class="btn-icon logout" id="logout-btn" title="Выйти">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -702,7 +794,7 @@
             <header class="main-header">
                 <div class="header-left">
                     <h1 id="page-title">Главная панель</h1>
-                    <p>Добро пожаловать в Leo Assistant</p>
+                    <p id="page-subtitle">Добро пожаловать в Leo Assistant</p>
                 </div>
                 
                 <div class="header-right">
@@ -713,32 +805,35 @@
                 </div>
             </header>
             
-            <!-- Контент -->
+            <!-- Контентная область -->
             <div class="content-area">
-                <!-- Секция: Главная -->
+                <!-- Секция: ГЛАВНАЯ -->
                 <section id="section-dashboard" class="content-section active">
                     <div class="dashboard-grid">
                         <!-- Виджет: Сегодня -->
                         <div class="widget large">
                             <div class="widget-header">
                                 <h3><i class="fas fa-sun"></i> Сегодня</h3>
-                                <span id="today-date"></span>
+                                <span class="widget-date" id="today-date"></span>
                             </div>
                             <div class="widget-body">
                                 <div class="today-info">
                                     <div class="current-lesson">
                                         <div class="lesson-status">
-                                            <span id="lesson-status-text">Нет урока</span>
+                                            <span class="status-text" id="lesson-status">Загрузка...</span>
+                                            <span class="status-time" id="lesson-time">-</span>
                                         </div>
                                         <div class="lesson-details">
-                                            <span class="subject" id="current-subject">Отдых</span>
-                                            <span class="room" id="current-room">-</span>
+                                            <span class="subject" id="lesson-subject">-</span>
+                                            <span class="room" id="lesson-room">-</span>
                                         </div>
                                     </div>
                                     
-                                    <div class="next-lesson">
-                                        <h4>Следующий урок:</h4>
-                                        <div id="next-lesson-info">Загрузка...</div>
+                                    <div class="today-tasks">
+                                        <h4>Задачи на сегодня</h4>
+                                        <div id="today-tasks-list">
+                                            <!-- Задачи загружаются через JS -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -748,7 +843,6 @@
                         <div class="widget medium">
                             <div class="widget-header">
                                 <h3><i class="fas fa-robot"></i> AI Помощник</h3>
-                                <span class="ai-status">Online</span>
                             </div>
                             <div class="widget-body">
                                 <div class="ai-chat">
@@ -757,15 +851,22 @@
                                             <div class="avatar">🤖</div>
                                             <div class="content">
                                                 <div class="text">Привет! Я Лео, ваш помощник. Чем могу помочь?</div>
+                                                <div class="time">Сейчас</div>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="chat-input">
-                                        <input type="text" id="ai-input" placeholder="Задайте вопрос..." onkeypress="if(event.key === 'Enter') sendMessage()">
-                                        <button onclick="sendMessage()">
+                                        <input type="text" id="ai-input" placeholder="Задайте вопрос...">
+                                        <button id="ai-send">
                                             <i class="fas fa-paper-plane"></i>
                                         </button>
+                                    </div>
+                                    
+                                    <div class="quick-questions">
+                                        <span class="quick-q" data-question="Какое расписание?">Расписание</span>
+                                        <span class="quick-q" data-question="Что задали по математике?">Математика</span>
+                                        <span class="quick-q" data-question="Когда физ-ра?">Физ-ра</span>
                                     </div>
                                 </div>
                             </div>
@@ -782,124 +883,70 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Виджет: Быстрые действия -->
-                        <div class="widget small">
-                            <div class="widget-header">
-                                <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
-                            </div>
-                            <div class="widget-body">
-                                <div class="quick-actions-grid">
-                                    <button class="quick-action" onclick="switchSection('schedule')">
-                                        <i class="fas fa-calendar"></i>
-                                        <span>Расписание</span>
-                                    </button>
-                                    <button class="quick-action" onclick="switchSection('tasks')">
-                                        <i class="fas fa-tasks"></i>
-                                        <span>Задания</span>
-                                    </button>
-                                    <button class="quick-action" onclick="switchSection('ai')">
-                                        <i class="fas fa-robot"></i>
-                                        <span>AI Помощник</span>
-                                    </button>
-                                    <button class="quick-action" onclick="switchSection('games')">
-                                        <i class="fas fa-gamepad"></i>
-                                        <span>Игры</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Виджет: Статистика -->
-                        <div class="widget small">
-                            <div class="widget-header">
-                                <h3><i class="fas fa-chart-bar"></i> Статистика</h3>
-                            </div>
-                            <div class="widget-body">
-                                <div class="stats-grid">
-                                    <div class="stat-item">
-                                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="stat-data">
-                                            <div class="value" id="stat-completed">0</div>
-                                            <div class="label">Выполнено</div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-icon"><i class="fas fa-fire"></i></div>
-                                        <div class="stat-data">
-                                            <div class="value" id="stat-streak">0</div>
-                                            <div class="label">Дней подряд</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </section>
                 
-                <!-- Секция: Расписание -->
+                <!-- Другие секции (сокращено для примера) -->
                 <section id="section-schedule" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-calendar-alt"></i> Расписание 7Б класса</h2>
-                    </div>
-                    <div class="schedule-container" id="schedule-container">
-                        <!-- Расписание загружается через JS -->
-                    </div>
+                    <h2>Расписание</h2>
+                    <div id="schedule-container"></div>
                 </section>
                 
-                <!-- Секция: Задания -->
                 <section id="section-tasks" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-tasks"></i> Мои задания</h2>
-                        <button class="btn-primary" onclick="addTask()">
-                            <i class="fas fa-plus"></i> Новое задание
-                        </button>
-                    </div>
-                    <div class="tasks-list" id="tasks-list">
-                        <!-- Задания загружаются через JS -->
-                    </div>
+                    <h2>Задания</h2>
+                    <div id="tasks-container"></div>
                 </section>
                 
-                <!-- Секция: Игры -->
+                <section id="section-ai" class="content-section">
+                    <h2>AI Помощник</h2>
+                    <div id="ai-container"></div>
+                </section>
+                
+                <section id="section-rating" class="content-section">
+                    <h2>Рейтинг</h2>
+                    <div id="rating-container"></div>
+                </section>
+                
                 <section id="section-games" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-gamepad"></i> Обучающие игры</h2>
-                    </div>
-                    <div class="games-grid" id="games-grid">
-                        <!-- Игры загружаются через JS -->
-                    </div>
+                    <h2>Игры</h2>
+                    <div id="games-container"></div>
                 </section>
             </div>
         </main>
     </div>
     
+    <!-- Уведомления -->
+    <div id="notifications-container"></div>
+    
     <!-- Скрипты -->
     <script src="./js/particles.min.js"></script>
     <script>
-        // Проверка авторизации
-        checkAuth();
-        
-        function checkAuth() {
-            const session = localStorage.getItem('leo_session');
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
+        // Инициализация системы
+        document.addEventListener('DOMContentLoaded', function() {
+            // ===== ПРОВЕРКА АВТОРИЗАЦИИ =====
+            function checkAuth() {
+                const session = localStorage.getItem('leo_session');
+                if (!session) {
+                    window.location.href = 'index.html';
+                    return null;
+                }
+                
+                try {
+                    return JSON.parse(session);
+                } catch (e) {
+                    localStorage.removeItem('leo_session');
+                    window.location.href = 'index.html';
+                    return null;
+                }
             }
             
-            try {
-                window.currentUser = JSON.parse(session);
-                initDashboard();
-            } catch (e) {
-                localStorage.removeItem('leo_session');
-                window.location.href = 'index.html';
-            }
-        }
-        
-        function initDashboard() {
-            // Инициализация частиц
+            const currentUser = checkAuth();
+            if (!currentUser) return;
+            
+            // ===== ИНИЦИАЛИЗАЦИЯ ЧАСТИЦ =====
             particlesJS('particles-js', {
                 particles: {
-                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    number: { value: 50, density: { enable: true, value_area: 800 } },
                     color: { value: ["#00c6ff", "#0072ff"] },
                     shape: { type: "circle" },
                     opacity: { value: 0.3, random: true },
@@ -911,446 +958,280 @@
                         opacity: 0.2,
                         width: 1
                     },
-                    move: { enable: true, speed: 1.5, direction: "none", random: true }
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: "none",
+                        random: true
+                    }
                 }
             });
             
-            // Загрузка данных пользователя
-            loadUserData();
-            
-            // Обновление времени
-            updateDateTime();
-            setInterval(updateDateTime, 60000);
-            
-            // Загрузка расписания
-            loadSchedule();
-            
-            // Загрузка рейтинга
-            loadRating();
-            
-            // Загрузка игр
-            loadGames();
-            
-            console.log('✅ Дашборд инициализирован для:', window.currentUser.fullname);
-        }
-        
-        function loadUserData() {
-            const user = window.currentUser;
-            
-            // Основная информация
-            document.getElementById('user-name').textContent = user.fullname;
-            document.getElementById('user-avatar').textContent = user.avatar || 'ЛУ';
-            
-            // Статистика
-            document.getElementById('user-points').textContent = user.points || 0;
-            document.getElementById('user-level').textContent = user.level || 1;
-            document.getElementById('user-rank').textContent = calculateRank();
-            
-            // Общая статистика
-            document.getElementById('stat-completed').textContent = user.completedTasks || 0;
-            document.getElementById('stat-streak').textContent = user.streak || 0;
-            
-            // Прогресс уровня
-            const level = user.level || 1;
-            const points = user.points || 0;
-            const pointsForLevel = level * 1000;
-            const progress = Math.min(100, (points / pointsForLevel) * 100);
-            
-            document.getElementById('level-progress-bar').style.width = `${progress}%`;
-            document.getElementById('next-level').textContent = level + 1;
-            document.getElementById('points-needed').textContent = `${pointsForLevel - points} очков`;
-            
-            // Обновляем текущий урок
-            updateCurrentLesson();
-        }
-        
-        function calculateRank() {
-            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
-            const activeStudents = users
-                .filter(u => u.active && u.role === 'student')
-                .sort((a, b) => (b.points || 0) - (a.points || 0));
-            
-            const rank = activeStudents.findIndex(u => u.id === window.currentUser.id) + 1;
-            return rank > 0 ? rank : '-';
-        }
-        
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Время
-            document.getElementById('current-time').textContent = 
-                now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
-            
-            // Дата
-            document.getElementById('current-date').textContent = 
-                now.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'});
-            
-            // Дата для виджета "Сегодня"
-            document.getElementById('today-date').textContent = 
-                now.toLocaleDateString('ru-RU', { weekday: 'long' });
-        }
-        
-        function updateCurrentLesson() {
-            const now = new Date();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
-            const currentTime = hour * 60 + minute;
-            
-            // Простое определение текущего урока
-            if (hour >= 8 && hour < 14) {
-                document.getElementById('lesson-status-text').textContent = 'Утренние занятия';
-                document.getElementById('current-subject').textContent = 'Уроки';
-                document.getElementById('current-room').textContent = 'Классы';
-                document.getElementById('next-lesson-info').textContent = '14:00 - Дневные занятия';
-            } else if (hour >= 14 && hour < 18) {
-                document.getElementById('lesson-status-text').textContent = 'Дневные занятия';
-                document.getElementById('current-subject').textContent = 'Уроки';
-                document.getElementById('current-room').textContent = 'Классы';
-                document.getElementById('next-lesson-info').textContent = '18:00 - Вечерние занятия';
-            } else {
-                document.getElementById('lesson-status-text').textContent = 'Нет урока';
-                document.getElementById('current-subject').textContent = 'Отдых';
-                document.getElementById('current-room').textContent = '-';
-                document.getElementById('next-lesson-info').textContent = 'Завтра с 8:00';
+            // ===== ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ =====
+            function loadUserData() {
+                // Основная информация
+                document.getElementById('user-name').textContent = currentUser.fullname;
+                document.getElementById('user-avatar').textContent = currentUser.avatar || 'ЛУ';
+                document.getElementById('user-points').textContent = currentUser.points || 0;
+                document.getElementById('user-level').textContent = currentUser.level || 1;
+                document.getElementById('user-rank').textContent = calculateRank();
+                
+                // Обновление времени
+                updateDateTime();
             }
-        }
-        
-        function loadSchedule() {
-            const container = document.getElementById('schedule-container');
-            if (!container) return;
             
-            // РЕАЛЬНОЕ РАСПИСАНИЕ 7Б КЛАССА
-            const schedule = {
-                monday: [
-                    { time: "13:10-13:50", subject: "История", room: "16 Каб" },
-                    { time: "14:00-14:40", subject: "Разговоры о важном", room: "21 Каб" },
-                    { time: "14:50-15:30", subject: "Биология", room: "21 Каб" },
-                    { time: "15:40-16:20", subject: "Русский язык", room: "32 Каб" },
-                    { time: "16:30-17:10", subject: "Труд", room: "6 Каб" },
-                    { time: "17:15-17:55", subject: "Труд", room: "6 Каб" },
-                    { time: "18:00-18:40", subject: "Литература", room: "32 Каб" }
-                ],
-                tuesday: [
-                    { time: "13:10-13:50", subject: "Информатика-пл", room: "42 Каб" },
-                    { time: "14:00-14:40", subject: "История", room: "16 Каб" },
-                    { time: "14:50-15:30", subject: "ИЗО", room: "6 Каб" },
-                    { time: "15:40-16:20", subject: "Алгебра", room: "34 Каб" },
-                    { time: "16:30-17:10", subject: "Русский язык", room: "32 Каб" },
-                    { time: "17:15-17:55", subject: "Физ-ра", room: "СЗ" },
-                    { time: "18:00-18:40", subject: "Геометрия", room: "34 Каб" }
-                ],
-                wednesday: [
-                    { time: "13:10-13:50", subject: "Физика", room: "35 Каб" },
-                    { time: "14:00-14:40", subject: "История", room: "16 Каб" },
-                    { time: "14:50-15:30", subject: "Физ-ра", room: "СЗ" },
-                    { time: "15:40-16:20", subject: "Русский язык", room: "32 Каб" },
-                    { time: "16:30-17:10", subject: "Физика", room: "35 Каб" },
-                    { time: "17:15-17:55", subject: "География", room: "22 Каб" },
-                    { time: "18:00-18:40", subject: "Русский язык-пл", room: "32 Каб" }
-                ]
-            };
-            
-            const days = [
-                { key: 'monday', name: 'Понедельник' },
-                { key: 'tuesday', name: 'Вторник' },
-                { key: 'wednesday', name: 'Среда' },
-                { key: 'thursday', name: 'Четверг' },
-                { key: 'friday', name: 'Пятница' },
-                { key: 'saturday', name: 'Суббота' }
-            ];
-            
-            let html = '<div class="days-grid">';
-            
-            days.forEach(day => {
-                const lessons = schedule[day.key] || [];
+            function calculateRank() {
+                const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+                const students = users
+                    .filter(u => u.role === 'student' && u.active)
+                    .sort((a, b) => (b.points || 0) - (a.points || 0));
                 
-                html += `
-                    <div class="day-card">
-                        <h3>${day.name}</h3>
-                        <div class="lessons-list">
-                `;
+                const rank = students.findIndex(u => u.id === currentUser.id) + 1;
+                return rank > 0 ? rank : '-';
+            }
+            
+            // ===== ОБНОВЛЕНИЕ ВРЕМЕНИ =====
+            function updateDateTime() {
+                const now = new Date();
                 
-                if (lessons.length > 0) {
-                    lessons.forEach(lesson => {
-                        html += `
-                            <div class="lesson">
-                                <span class="time">${lesson.time}</span>
-                                <span class="subject">${lesson.subject}</span>
-                                <span class="room">${lesson.room}</span>
-                            </div>
-                        `;
-                    });
+                // Время
+                const timeOptions = { hour: '2-digit', minute: '2-digit' };
+                document.getElementById('current-time').textContent = 
+                    now.toLocaleTimeString('ru-RU', timeOptions);
+                
+                // Дата
+                const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+                document.getElementById('current-date').textContent = 
+                    now.toLocaleDateString('ru-RU', dateOptions);
+                
+                // Дата для виджета "Сегодня"
+                document.getElementById('today-date').textContent = 
+                    now.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+                
+                // Обновляем текущий урок
+                updateCurrentLesson();
+            }
+            
+            // ===== ОБНОВЛЕНИЕ ТЕКУЩЕГО УРОКА =====
+            function updateCurrentLesson() {
+                const now = new Date();
+                const schedule = JSON.parse(localStorage.getItem('leo_schedule') || '{}');
+                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const todayKey = days[now.getDay()];
+                const todayLessons = schedule[todayKey] || [];
+                
+                const currentTime = now.getHours() * 60 + now.getMinutes();
+                
+                let currentLesson = null;
+                
+                for (const lesson of todayLessons) {
+                    const [startTime] = lesson.time.split('-');
+                    const [hours, minutes] = startTime.split(':').map(Number);
+                    const lessonStart = hours * 60 + minutes;
+                    
+                    if (currentTime >= lessonStart && currentTime < lessonStart + 45) {
+                        currentLesson = lesson;
+                        break;
+                    }
+                }
+                
+                if (currentLesson) {
+                    document.getElementById('lesson-status').textContent = 'Сейчас идет';
+                    document.getElementById('lesson-time').textContent = currentLesson.time;
+                    document.getElementById('lesson-subject').textContent = currentLesson.subject;
+                    document.getElementById('lesson-room').textContent = currentLesson.room;
                 } else {
-                    html += `<div class="no-lessons">Нет занятий</div>`;
+                    document.getElementById('lesson-status').textContent = 'Нет урока';
+                    document.getElementById('lesson-time').textContent = '-';
+                    document.getElementById('lesson-subject').textContent = 'Отдых';
+                    document.getElementById('lesson-room').textContent = '-';
                 }
-                
-                html += `
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            container.innerHTML = html;
-        }
-        
-        function loadRating() {
-            const container = document.getElementById('rating-list');
-            if (!container) return;
-            
-            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
-            const activeStudents = users
-                .filter(u => u.active && u.role === 'student')
-                .sort((a, b) => (b.points || 0) - (a.points || 0))
-                .slice(0, 5);
-            
-            if (activeStudents.length === 0) {
-                container.innerHTML = '<p>Пока нет активных учеников</p>';
-                return;
             }
             
-            let html = '';
-            activeStudents.forEach((user, index) => {
-                const isCurrent = user.id === window.currentUser.id;
-                const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `${index + 1}.`;
+            // ===== ЗАГРУЗКА РЕЙТИНГА =====
+            function loadRating() {
+                const container = document.getElementById('rating-list');
+                const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+                const students = users
+                    .filter(u => u.role === 'student' && u.active)
+                    .sort((a, b) => (b.points || 0) - (a.points || 0))
+                    .slice(0, 5);
                 
-                html += `
-                    <div class="rating-item ${isCurrent ? 'current-user' : ''}">
+                container.innerHTML = '';
+                
+                if (students.length === 0) {
+                    container.innerHTML = '<div class="empty">Нет данных</div>';
+                    return;
+                }
+                
+                students.forEach((user, index) => {
+                    const isCurrent = user.id === currentUser.id;
+                    const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `${index + 1}.`;
+                    
+                    const item = document.createElement('div');
+                    item.className = `rating-item ${isCurrent ? 'current-user' : ''}`;
+                    item.innerHTML = `
                         <div class="rating-rank">${medal}</div>
                         <div class="rating-avatar">${user.avatar}</div>
                         <div class="rating-info">
                             <div class="rating-name">${user.fullname}</div>
-                            <div class="rating-points">${user.points || 0} очков</div>
+                            <div class="rating-details">
+                                <span class="rating-level">Ур. ${user.level || 1}</span>
+                                <span class="rating-points">${user.points || 0} очков</span>
+                            </div>
                         </div>
-                        ${isCurrent ? '<span class="you-badge">Вы</span>' : ''}
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function loadGames() {
-            const container = document.getElementById('games-grid');
-            if (!container) return;
-            
-            const games = [
-                {
-                    id: 1,
-                    name: "Алгебраический вызов",
-                    description: "Решайте уравнения 7 класса",
-                    icon: "🧮",
-                    color: "#00c6ff"
-                },
-                {
-                    id: 2,
-                    name: "Геометрический гений",
-                    description: "Задачи по геометрии 7 класса",
-                    icon: "📐",
-                    color: "#ff6b9d"
-                },
-                {
-                    id: 3,
-                    name: "Физический эксперимент",
-                    description: "Задачи по физике 7 класса",
-                    icon: "⚡",
-                    color: "#ffcc00"
-                },
-                {
-                    id: 4,
-                    name: "Химическая реакция",
-                    description: "Химия 7 класса",
-                    icon: "🧪",
-                    color: "#00ff88"
-                }
-            ];
-            
-            let html = '';
-            games.forEach(game => {
-                html += `
-                    <div class="game-card" style="border-color: ${game.color}">
-                        <div class="game-icon">${game.icon}</div>
-                        <h3>${game.name}</h3>
-                        <p>${game.description}</p>
-                        <button class="play-btn" onclick="startGame(${game.id})">
-                            <i class="fas fa-play"></i> Играть
-                        </button>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('ai-input');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Добавляем сообщение пользователя
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Ответ AI
-            setTimeout(() => {
-                const responses = [
-                    "Интересный вопрос! Я ещё учусь, но скоро смогу отвечать на такие вопросы.",
-                    "Сейчас проверю эту информацию для вас.",
-                    "Это хороший вопрос! Давайте разберемся вместе.",
-                    "Я могу помочь с расписанием и заданиями. Что именно вас интересует?",
-                    "Для получения точного ответа обратитесь к учителю по этому предмету."
-                ];
-                
-                const response = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(response, 'ai');
-            }, 1000);
-        }
-        
-        function addMessage(text, sender) {
-            const container = document.getElementById('chat-messages');
-            const message = document.createElement('div');
-            
-            message.className = `message ${sender}`;
-            message.innerHTML = `
-                <div class="avatar">${sender === 'user' ? window.currentUser.avatar : '🤖'}</div>
-                <div class="content">
-                    <div class="text">${text}</div>
-                </div>
-            `;
-            
-            container.appendChild(message);
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        function switchSection(section) {
-            // Скрываем все секции
-            document.querySelectorAll('.content-section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            
-            // Убираем активный класс у всех кнопок
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Показываем выбранную секцию
-            document.getElementById(`section-${section}`).classList.add('active');
-            
-            // Активируем кнопку
-            event.target.closest('.nav-item').classList.add('active');
-            
-            // Обновляем заголовок
-            const titles = {
-                'dashboard': 'Главная панель',
-                'schedule': 'Расписание',
-                'tasks': 'Мои задания',
-                'ai': 'AI Помощник',
-                'rating': 'Рейтинг класса',
-                'games': 'Обучающие игры'
-            };
-            
-            document.getElementById('page-title').textContent = titles[section] || section;
-        }
-        
-        function addTask() {
-            const title = prompt('Введите название задания:');
-            if (!title) return;
-            
-            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
-            
-            const newTask = {
-                id: Date.now(),
-                userId: window.currentUser.id,
-                title: title,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
-            
-            tasks.push(newTask);
-            localStorage.setItem('leo_tasks', JSON.stringify(tasks));
-            
-            alert('Задание добавлено!');
-            loadTasks();
-        }
-        
-        function loadTasks() {
-            const container = document.getElementById('tasks-list');
-            if (!container) return;
-            
-            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
-            const userTasks = tasks.filter(t => t.userId === window.currentUser.id);
-            
-            if (userTasks.length === 0) {
-                container.innerHTML = '<p>Нет заданий</p>';
-                return;
+                    `;
+                    container.appendChild(item);
+                });
             }
             
-            let html = '';
-            userTasks.forEach(task => {
-                html += `
-                    <div class="task ${task.completed ? 'completed' : ''}">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
-                               onchange="toggleTask(${task.id})">
-                        <span>${task.title}</span>
-                        <button onclick="deleteTask(${task.id})">×</button>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function toggleTask(taskId) {
-            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
-            const task = tasks.find(t => t.id === taskId);
-            
-            if (task) {
-                task.completed = !task.completed;
+            // ===== AI ПОМОЩНИК =====
+            function initAI() {
+                const input = document.getElementById('ai-input');
+                const sendBtn = document.getElementById('ai-send');
+                const messages = document.getElementById('chat-messages');
                 
-                // Начисляем очки за выполнение
-                if (task.completed) {
-                    window.currentUser.points = (window.currentUser.points || 0) + 100;
-                    localStorage.setItem('leo_session', JSON.stringify(window.currentUser));
+                function sendMessage() {
+                    const text = input.value.trim();
+                    if (!text) return;
                     
-                    // Обновляем в базе
-                    const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
-                    const userIndex = users.findIndex(u => u.id === window.currentUser.id);
-                    if (userIndex !== -1) {
-                        users[userIndex].points = window.currentUser.points;
-                        localStorage.setItem('leo_users', JSON.stringify(users));
-                    }
+                    // Добавляем сообщение пользователя
+                    addMessage(text, 'user');
+                    input.value = '';
+                    
+                    // Ответ AI
+                    setTimeout(() => {
+                        const responses = [
+                            "Интересный вопрос! Я ещё учусь.",
+                            "Проверьте расписание в соответствующем разделе.",
+                            "Для этого вопроса обратитесь к учителю.",
+                            "Я могу помочь с расписанием и заданиями."
+                        ];
+                        const response = responses[Math.floor(Math.random() * responses.length)];
+                        addMessage(response, 'ai');
+                    }, 800);
                 }
                 
-                localStorage.setItem('leo_tasks', JSON.stringify(tasks));
+                function addMessage(text, sender) {
+                    const message = document.createElement('div');
+                    message.className = `message ${sender}`;
+                    
+                    const time = new Date().toLocaleTimeString('ru-RU', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    message.innerHTML = `
+                        <div class="avatar">${sender === 'user' ? currentUser.avatar : '🤖'}</div>
+                        <div class="content">
+                            <div class="text">${text}</div>
+                            <div class="time">${time}</div>
+                        </div>
+                    `;
+                    
+                    messages.appendChild(message);
+                    messages.scrollTop = messages.scrollHeight;
+                }
+                
+                // Обработчики событий
+                sendBtn.addEventListener('click', sendMessage);
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') sendMessage();
+                });
+                
+                // Быстрые вопросы
+                document.querySelectorAll('.quick-q').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        input.value = e.target.dataset.question;
+                        sendMessage();
+                    });
+                });
+            }
+            
+            // ===== ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ =====
+            function setupNavigation() {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = this.dataset.section;
+                        
+                        // Обновляем активные элементы
+                        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                        
+                        this.classList.add('active');
+                        document.getElementById(`section-${section}`).classList.add('active');
+                        
+                        // Обновляем заголовок
+                        const titles = {
+                            'dashboard': 'Главная панель',
+                            'schedule': 'Расписание',
+                            'tasks': 'Мои задания',
+                            'ai': 'AI Помощник',
+                            'rating': 'Рейтинг класса',
+                            'games': 'Обучающие игры'
+                        };
+                        
+                        document.getElementById('page-title').textContent = titles[section] || section;
+                    });
+                });
+            }
+            
+            // ===== ВЫХОД ИЗ СИСТЕМЫ =====
+            function setupLogout() {
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    if (confirm('Вы уверены, что хотите выйти?')) {
+                        localStorage.removeItem('leo_session');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+            
+            // ===== ОБНОВЛЕНИЕ ДАННЫХ =====
+            function setupRefresh() {
+                document.getElementById('refresh-btn').addEventListener('click', () => {
+                    loadUserData();
+                    loadRating();
+                    showNotification('Данные обновлены', 'success');
+                });
+            }
+            
+            // ===== УВЕДОМЛЕНИЯ =====
+            function showNotification(message, type = 'info') {
+                const container = document.getElementById('notifications-container');
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+            
+            // ===== ИНИЦИАЛИЗАЦИЯ ВСЕГО =====
+            function initDashboard() {
                 loadUserData();
+                loadRating();
+                initAI();
+                setupNavigation();
+                setupLogout();
+                setupRefresh();
+                
+                // Автообновление времени
+                updateDateTime();
+                setInterval(updateDateTime, 60000);
+                
+                console.log('✅ Дашборд инициализирован для:', currentUser.fullname);
             }
-        }
-        
-        function deleteTask(taskId) {
-            if (!confirm('Удалить задание?')) return;
             
-            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
-            const filteredTasks = tasks.filter(t => t.id !== taskId);
-            
-            localStorage.setItem('leo_tasks', JSON.stringify(filteredTasks));
-            loadTasks();
-        }
-        
-        function startGame(gameId) {
-            alert(`Запуск игры ${gameId}. Игра в разработке!`);
-        }
-        
-        function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                localStorage.removeItem('leo_session');
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', () => {
-            // Уже инициализировано в checkAuth()
+            // Запускаем дашборд
+            initDashboard();
         });
     </script>
 </body>
