@@ -1,5 +1,6 @@
-/* style.css - ОСНОВНЫЕ СТИЛИ С ПРАВИЛЬНЫМИ ЧАСТИЦАМИ */
+/* style.css - ТОЧНАЯ КОПИЯ ДИЗАЙНА ВАШЕГО САЙТА */
 
+/* ОСНОВНЫЕ СТИЛИ */
 :root {
     --primary: #00c6ff;
     --primary-dark: #0072ff;
@@ -8,18 +9,18 @@
     --dark: #0a0a0a;
     --darker: #050505;
     --dark-gray: #1a1a1a;
-    --gray: #333333;
-    --light-gray: #888888;
+    --gray: #333;
+    --light-gray: #888;
     --light: #ffffff;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --glow: 0 0 20px rgba(0, 198, 255, 0.3);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    --glow: 0 0 30px rgba(0, 198, 255, 0.5);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 body {
@@ -27,11 +28,9 @@ body {
     color: var(--light);
     min-height: 100vh;
     overflow-x: hidden;
-    font-size: 16px;
-    line-height: 1.6;
 }
 
-/* Частицы НА ФОНЕ (как на вашем сайте) */
+/* ЧАСТИЦЫ НА ФОНЕ */
 #particles-js {
     position: fixed;
     width: 100%;
@@ -40,17 +39,17 @@ body {
     z-index: -1;
 }
 
-/* Главный контейнер */
+/* ГЛАВНЫЙ КОНТЕЙНЕР */
 .main-container {
     display: flex;
     min-height: 100vh;
-    padding: 20px;
     max-width: 1600px;
     margin: 0 auto;
+    padding: 20px;
     gap: 40px;
 }
 
-/* Левая панель с нейросетью */
+/* ЛЕВАЯ ПАНЕЛЬ */
 .left-panel {
     flex: 1;
     display: flex;
@@ -65,16 +64,15 @@ body {
     padding: 40px;
     width: 100%;
     max-width: 600px;
-    border: 1px solid rgba(0, 198, 255, 0.2);
+    border: 1px solid rgba(0, 198, 255, 0.3);
     box-shadow: var(--shadow), var(--glow);
     backdrop-filter: blur(10px);
-    animation: fadeIn 1s ease;
 }
 
 .neural-network h1 {
     font-size: 2.8rem;
     margin-bottom: 10px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background: linear-gradient(90deg, var(--primary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
@@ -87,18 +85,23 @@ body {
     font-size: 1.1rem;
 }
 
-/* Визуализация нейросети (упрощенная, с канвасом) */
+/* КАНВАС ДЛЯ АНИМАЦИИ НЕЙРОСЕТИ */
 .neural-visualization {
     position: relative;
-    height: 250px;
+    height: 300px;
     margin: 40px 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
 }
 
-/* Функции */
+#neural-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* ФУНКЦИИ */
 .features {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -112,7 +115,7 @@ body {
     gap: 15px;
     padding: 15px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.3s;
 }
 
@@ -130,7 +133,7 @@ body {
     font-weight: 500;
 }
 
-/* Правая панель с формой */
+/* ПРАВАЯ ПАНЕЛЬ */
 .right-panel {
     flex: 1;
     display: flex;
@@ -145,13 +148,12 @@ body {
     padding: 40px;
     width: 100%;
     max-width: 500px;
-    border: 1px solid rgba(0, 198, 255, 0.2);
+    border: 1px solid rgba(0, 198, 255, 0.3);
     box-shadow: var(--shadow), var(--glow);
     backdrop-filter: blur(10px);
-    animation: slideInRight 1s ease;
 }
 
-/* Вкладки - ИСПРАВЛЕНЫ */
+/* ВКЛАДКИ */
 .auth-tabs {
     display: flex;
     background: rgba(255, 255, 255, 0.05);
@@ -196,7 +198,7 @@ body {
     background: var(--secondary);
 }
 
-/* Формы */
+/* ФОРМЫ */
 .auth-form {
     display: none;
     animation: fadeIn 0.5s ease;
@@ -220,7 +222,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* Поля ввода */
+/* ПОЛЯ ВВОДА */
 .input-group {
     position: relative;
     margin-bottom: 25px;
@@ -266,7 +268,7 @@ body {
     padding: 5px;
 }
 
-/* Опции формы */
+/* ОПЦИИ ФОРМЫ */
 .form-options {
     display: flex;
     justify-content: space-between;
@@ -300,7 +302,7 @@ body {
     text-decoration: underline;
 }
 
-/* Чекбокс согласия */
+/* ЧЕКБОКС СОГЛАСИЯ */
 .form-checkbox {
     display: flex;
     align-items: center;
@@ -325,7 +327,7 @@ body {
     text-decoration: underline;
 }
 
-/* Кнопка отправки */
+/* КНОПКИ */
 .submit-btn {
     width: 100%;
     padding: 18px;
@@ -349,15 +351,11 @@ body {
     box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
 }
 
-.submit-btn:active {
-    transform: translateY(-1px);
-}
-
 .submit-btn.warning {
     background: linear-gradient(90deg, var(--secondary), #cc0066);
 }
 
-/* Демо вход */
+/* ДЕМО ВХОД */
 .demo-login {
     margin-top: 30px;
     padding-top: 20px;
@@ -389,7 +387,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Админ предупреждение */
+/* АДМИН ПРЕДУПРЕЖДЕНИЕ */
 .admin-warning {
     background: rgba(255, 0, 128, 0.1);
     border: 1px solid rgba(255, 0, 128, 0.3);
@@ -411,7 +409,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* Сообщения */
+/* СООБЩЕНИЯ */
 .message-box {
     display: none;
     padding: 15px 20px;
@@ -439,13 +437,7 @@ body {
     color: #ffc107;
 }
 
-.message-box.info {
-    background: rgba(0, 198, 255, 0.1);
-    border: 1px solid rgba(0, 198, 255, 0.3);
-    color: var(--primary);
-}
-
-/* Информация системы */
+/* СИСТЕМНАЯ ИНФОРМАЦИЯ */
 .system-info {
     display: flex;
     justify-content: space-around;
@@ -477,7 +469,7 @@ body {
     color: var(--accent);
 }
 
-/* Примечание формы */
+/* ПРИМЕЧАНИЕ ФОРМЫ */
 .form-note {
     color: var(--light-gray);
     font-size: 0.85rem;
@@ -486,15 +478,10 @@ body {
     line-height: 1.4;
 }
 
-/* Анимации */
+/* АНИМАЦИИ */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-
-@keyframes slideInRight {
-    from { opacity: 0; transform: translateX(50px); }
-    to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInUp {
@@ -502,7 +489,7 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Адаптивность */
+/* АДАПТИВНОСТЬ */
 @media (max-width: 1200px) {
     .main-container {
         flex-direction: column;
@@ -531,6 +518,10 @@ body {
         font-size: 2.2rem;
     }
     
+    .neural-visualization {
+        height: 200px;
+    }
+    
     .features {
         grid-template-columns: 1fr;
     }
@@ -548,21 +539,5 @@ body {
         flex-direction: column;
         align-items: center;
         text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .neural-visualization {
-        height: 200px;
-    }
-    
-    .input-group input {
-        padding: 15px 15px 15px 45px;
-        font-size: 0.9rem;
-    }
-    
-    .submit-btn {
-        padding: 15px;
-        font-size: 1rem;
     }
 }
