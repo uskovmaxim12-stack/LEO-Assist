@@ -1,443 +1,697 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leo Assistant | Админ-панель</title>
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/admin.css">
+    
+    <!-- Иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Основные стили -->
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <!-- Шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body class="dark-theme">
-    <!-- Контейнер админки -->
+<body>
+    <!-- Главный контейнер -->
     <div class="admin-container">
         
-        <!-- Боковое меню -->
-        <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <div class="logo-icon">
-                    <i class="fas fa-shield-alt"></i>
+        <!-- Навигационная панель -->
+        <nav class="admin-navbar">
+            <div class="navbar-left">
+                <div class="brand">
+                    <div class="brand-icon">⚡</div>
+                    <div class="brand-text">
+                        <span class="brand-title">Leo Admin</span>
+                        <span class="brand-subtitle">Панель управления</span>
+                    </div>
                 </div>
-                <h2>Админ-панель</h2>
-                <p>Leo Assistant 7Б</p>
+                
+                <div class="nav-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Поиск по системе..." id="globalSearch">
+                </div>
             </div>
             
-            <!-- Меню навигации -->
-            <nav class="admin-nav">
-                <div class="nav-section">
-                    <h4>Основное</h4>
-                    <a href="#" class="nav-item active" data-tab="dashboard">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Главная</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="users">
-                        <i class="fas fa-users"></i>
-                        <span>Пользователи</span>
-                        <span class="nav-badge" id="users-count">0</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="schedule">
-                        <i class="fas fa-calendar"></i>
-                        <span>Расписание</span>
-                    </a>
+            <div class="navbar-right">
+                <div class="nav-notifications">
+                    <button class="nav-btn" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
                 </div>
                 
-                <div class="nav-section">
-                    <h4>Контент</h4>
-                    <a href="#" class="nav-item" data-tab="tasks">
-                        <i class="fas fa-tasks"></i>
-                        <span>Задания</span>
-                        <span class="nav-badge" id="tasks-count">0</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="content">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Материалы</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="announcements">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Объявления</span>
-                    </a>
-                </div>
-                
-                <div class="nav-section">
-                    <h4>AI Система</h4>
-                    <a href="#" class="nav-item" data-tab="ai-training">
-                        <i class="fas fa-brain"></i>
-                        <span>Обучение AI</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="knowledge-base">
-                        <i class="fas fa-database"></i>
-                        <span>База знаний</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="ai-settings">
-                        <i class="fas fa-cogs"></i>
-                        <span>Настройки AI</span>
-                    </a>
-                </div>
-                
-                <div class="nav-section">
-                    <h4>Аналитика</h4>
-                    <a href="#" class="nav-item" data-tab="statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Статистика</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="logs">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Логи системы</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="monitoring">
-                        <i class="fas fa-desktop"></i>
-                        <span>Мониторинг</span>
-                    </a>
-                </div>
-                
-                <div class="nav-section">
-                    <h4>Система</h4>
-                    <a href="#" class="nav-item" data-tab="settings">
-                        <i class="fas fa-sliders-h"></i>
-                        <span>Настройки</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="backup">
-                        <i class="fas fa-hdd"></i>
-                        <span>Резервные копии</span>
-                    </a>
-                    <a href="#" class="nav-item" data-tab="security">
-                        <i class="fas fa-lock"></i>
-                        <span>Безопасность</span>
-                    </a>
-                </div>
-            </nav>
-            
-            <!-- Футер -->
-            <div class="admin-footer">
-                <div class="admin-user">
-                    <div class="user-avatar">АД</div>
+                <div class="nav-user">
+                    <div class="user-avatar">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                    </div>
                     <div class="user-info">
-                        <div class="user-name">Администратор</div>
-                        <div class="user-role">Супер-админ</div>
+                        <span class="user-name">Администратор</span>
+                        <span class="user-role">Супер-админ</span>
                     </div>
-                </div>
-                <div class="admin-actions">
-                    <button class="btn btn-icon" title="Обновить">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button class="btn btn-icon" title="Выйти" id="admin-logout">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <button class="nav-btn" id="userMenuBtn">
+                        <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
             </div>
-        </aside>
-        
+        </nav>
+
         <!-- Основной контент -->
-        <main class="admin-main">
-            <!-- Шапка -->
-            <header class="admin-header">
-                <div class="header-left">
-                    <h1 id="admin-title">Панель администратора</h1>
-                    <div class="breadcrumbs">
-                        <span class="crumb">Админ-панель</span>
-                        <span class="separator">/</span>
-                        <span class="crumb active">Главная</span>
-                    </div>
-                </div>
-                
-                <div class="header-right">
-                    <div class="system-status">
-                        <div class="status-item online">
-                            <i class="fas fa-server"></i>
-                            <span>Система</span>
-                        </div>
-                        <div class="status-item online">
-                            <i class="fas fa-database"></i>
-                            <span>База данных</span>
-                        </div>
-                        <div class="status-item online">
-                            <i class="fas fa-robot"></i>
-                            <span>AI Система</span>
-                        </div>
-                    </div>
-                    <div class="quick-search">
-                        <input type="text" placeholder="Поиск в системе...">
-                        <i class="fas fa-search"></i>
-                    </div>
-                </div>
-            </header>
+        <div class="admin-content">
             
-            <!-- Вкладки контента -->
-            <div class="admin-content">
-                
-                <!-- Вкладка: ГЛАВНАЯ -->
-                <section id="tab-dashboard" class="admin-tab active">
-                    <div class="dashboard-stats">
-                        <div class="stat-card large">
-                            <div class="stat-icon"><i class="fas fa-users"></i></div>
-                            <div class="stat-info">
-                                <div class="stat-number" id="total-users">0</div>
-                                <div class="stat-label">Всего пользователей</div>
-                            </div>
-                            <div class="stat-trend up">+5%</div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
-                            <div class="stat-info">
-                                <div class="stat-number" id="active-users">0</div>
-                                <div class="stat-label">Активных</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-robot"></i></div>
-                            <div class="stat-info">
-                                <div class="stat-number" id="ai-requests">0</div>
-                                <div class="stat-label">Запросов к AI</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-tasks"></i></div>
-                            <div class="stat-info">
-                                <div class="stat-number" id="total-tasks">0</div>
-                                <div class="stat-label">Заданий</div>
-                            </div>
-                        </div>
+            <!-- Сайдбар -->
+            <aside class="admin-sidebar">
+                <div class="sidebar-menu">
+                    <div class="menu-section">
+                        <h3 class="section-title">Основное</h3>
+                        <a href="#dashboard" class="menu-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Дашборд</span>
+                        </a>
+                        <a href="#analytics" class="menu-item" data-section="analytics">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Аналитика</span>
+                        </a>
                     </div>
                     
-                    <div class="dashboard-grid">
-                        <!-- График активности -->
-                        <div class="dashboard-widget large">
-                            <div class="widget-header">
-                                <h3>Активность пользователей</h3>
-                                <select class="period-select">
-                                    <option>За сегодня</option>
-                                    <option>За неделю</option>
-                                    <option>За месяц</option>
-                                </select>
+                    <div class="menu-section">
+                        <h3 class="section-title">Управление</h3>
+                        <a href="#users" class="menu-item" data-section="users">
+                            <i class="fas fa-users"></i>
+                            <span>Пользователи</span>
+                            <span class="menu-badge" id="usersCount">0</span>
+                        </a>
+                        <a href="#content" class="menu-item" data-section="content">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Контент</span>
+                        </a>
+                        <a href="#tasks" class="menu-item" data-section="tasks">
+                            <i class="fas fa-tasks"></i>
+                            <span>Задания</span>
+                            <span class="menu-badge" id="tasksCount">0</span>
+                        </a>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <h3 class="section-title">AI Система</h3>
+                        <a href="#ai" class="menu-item" data-section="ai">
+                            <i class="fas fa-robot"></i>
+                            <span>Нейросеть</span>
+                        </a>
+                        <a href="#knowledge" class="menu-item" data-section="knowledge">
+                            <i class="fas fa-brain"></i>
+                            <span>База знаний</span>
+                        </a>
+                        <a href="#training" class="menu-item" data-section="training">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Обучение</span>
+                        </a>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <h3 class="section-title">Система</h3>
+                        <a href="#settings" class="menu-item" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Настройки</span>
+                        </a>
+                        <a href="#security" class="menu-item" data-section="security">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Безопасность</span>
+                        </a>
+                        <a href="#logs" class="menu-item" data-section="logs">
+                            <i class="fas fa-history"></i>
+                            <span>Логи</span>
+                            <span class="menu-badge" id="logsCount">0</span>
+                        </a>
+                    </div>
+                    
+                    <div class="sidebar-footer">
+                        <button class="btn-logout" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Выйти</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Основная область -->
+            <main class="admin-main">
+                <div class="content-wrapper">
+                    
+                    <!-- Дашборд -->
+                    <section class="content-section active" id="section-dashboard">
+                        <div class="section-header">
+                            <h1 class="section-title">Обзор системы</h1>
+                            <div class="section-actions">
+                                <button class="btn-refresh" id="refreshDashboard">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
                             </div>
-                            <div class="widget-content">
-                                <div class="chart-container">
-                                    <canvas id="activity-chart"></canvas>
+                        </div>
+                        
+                        <!-- Карточки статистики -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon primary">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 class="stat-title">Пользователи</h3>
+                                    <div class="stat-value" id="statUsers">0</div>
+                                    <div class="stat-change positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+0 сегодня</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon success">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 class="stat-title">Задания</h3>
+                                    <div class="stat-value" id="statTasks">0</div>
+                                    <div class="stat-change">
+                                        <span>0 активных</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon warning">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 class="stat-title">AI Запросы</h3>
+                                    <div class="stat-value" id="statAIRequests">0</div>
+                                    <div class="stat-change positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+0 сегодня</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon danger">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 class="stat-title">Активность</h3>
+                                    <div class="stat-value" id="statActivity">0%</div>
+                                    <div class="stat-change negative">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>-0% с прошлой недели</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Графики -->
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>Активность пользователей</h3>
+                                    <select class="chart-period" id="activityPeriod">
+                                        <option value="7d">7 дней</option>
+                                        <option value="30d">30 дней</option>
+                                        <option value="90d">90 дней</option>
+                                    </select>
+                                </div>
+                                <div class="chart-body">
+                                    <canvas id="activityChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>Распределение по классам</h3>
+                                </div>
+                                <div class="chart-body">
+                                    <canvas id="classesChart"></canvas>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Последние действия -->
-                        <div class="dashboard-widget">
-                            <div class="widget-header">
+                        <div class="recent-activity">
+                            <div class="activity-header">
                                 <h3>Последние действия</h3>
-                                <button class="btn btn-sm">Все логи</button>
+                                <a href="#logs" class="view-all">Все логи</a>
                             </div>
-                            <div class="widget-content">
-                                <div class="activity-list" id="recent-activity">
-                                    <!-- Список действий -->
+                            <div class="activity-list" id="recentActivities">
+                                <div class="activity-empty">
+                                    <i class="fas fa-history"></i>
+                                    <p>Нет последних действий</p>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Пользователи -->
+                    <section class="content-section" id="section-users">
+                        <div class="section-header">
+                            <h1 class="section-title">Управление пользователями</h1>
+                            <div class="section-actions">
+                                <button class="btn-primary" id="addUserBtn">
+                                    <i class="fas fa-user-plus"></i>
+                                    Добавить пользователя
+                                </button>
                             </div>
                         </div>
                         
-                        <!-- Быстрые действия -->
-                        <div class="dashboard-widget">
-                            <div class="widget-header">
-                                <h3>Быстрые действия</h3>
-                            </div>
-                            <div class="widget-content">
-                                <div class="quick-actions-grid">
-                                    <button class="quick-action-btn" data-action="add-user">
-                                        <i class="fas fa-user-plus"></i>
-                                        <span>Добавить пользователя</span>
-                                    </button>
-                                    <button class="quick-action-btn" data-action="add-schedule">
-                                        <i class="fas fa-calendar-plus"></i>
-                                        <span>Добавить расписание</span>
-                                    </button>
-                                    <button class="quick-action-btn" data-action="train-ai">
-                                        <i class="fas fa-brain"></i>
-                                        <span>Обучить AI</span>
-                                    </button>
-                                    <button class="quick-action-btn" data-action="backup">
-                                        <i class="fas fa-save"></i>
-                                        <span>Создать бэкап</span>
-                                    </button>
-                                    <button class="quick-action-btn" data-action="clear-cache">
-                                        <i class="fas fa-broom"></i>
-                                        <span>Очистить кэш</span>
-                                    </button>
-                                    <button class="quick-action-btn" data-action="system-check">
-                                        <i class="fas fa-stethoscope"></i>
-                                        <span>Проверка системы</span>
-                                    </button>
+                        <div class="users-toolbar">
+                            <div class="toolbar-left">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Поиск пользователей..." id="usersSearch">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Вкладка: ПОЛЬЗОВАТЕЛИ -->
-                <section id="tab-users" class="admin-tab">
-                    <div class="tab-header">
-                        <h2>Управление пользователями</h2>
-                        <div class="tab-actions">
-                            <button class="btn btn-primary" id="add-user-btn">
-                                <i class="fas fa-user-plus"></i> Добавить пользователя
-                            </button>
-                            <button class="btn btn-secondary" id="import-users">
-                                <i class="fas fa-file-import"></i> Импорт
-                            </button>
-                            <button class="btn btn-secondary" id="export-users">
-                                <i class="fas fa-file-export"></i> Экспорт
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="users-container">
-                        <!-- Фильтры -->
-                        <div class="filters-bar">
-                            <div class="search-box">
-                                <i class="fas fa-search"></i>
-                                <input type="text" placeholder="Поиск пользователей..." id="user-search">
-                            </div>
-                            <div class="filter-group">
-                                <select id="filter-role">
-                                    <option value="">Все роли</option>
-                                    <option value="student">Ученик</option>
-                                    <option value="teacher">Учитель</option>
-                                    <option value="admin">Администратор</option>
-                                </select>
-                                <select id="filter-status">
-                                    <option value="">Все статусы</option>
+                                <select class="filter-select" id="usersFilter">
+                                    <option value="all">Все пользователи</option>
                                     <option value="active">Активные</option>
                                     <option value="inactive">Неактивные</option>
-                                    <option value="pending">Ожидают активации</option>
+                                    <option value="admins">Администраторы</option>
                                 </select>
-                                <select id="filter-class">
-                                    <option value="">Все классы</option>
-                                    <option value="7Б">7Б</option>
-                                </select>
+                            </div>
+                            <div class="toolbar-right">
+                                <button class="btn-secondary" id="exportUsers">
+                                    <i class="fas fa-download"></i>
+                                    Экспорт
+                                </button>
                             </div>
                         </div>
                         
-                        <!-- Таблица пользователей -->
                         <div class="table-container">
-                            <table class="data-table">
+                            <table class="data-table" id="usersTable">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" id="select-all"></th>
-                                        <th>ID</th>
-                                        <th>ФИО</th>
-                                        <th>Логин</th>
+                                        <th style="width: 60px;">
+                                            <input type="checkbox" id="selectAllUsers">
+                                        </th>
+                                        <th>Пользователь</th>
                                         <th>Роль</th>
                                         <th>Класс</th>
                                         <th>Очки</th>
+                                        <th>Задания</th>
                                         <th>Статус</th>
-                                        <th>Дата регистрации</th>
                                         <th>Действия</th>
                                     </tr>
                                 </thead>
-                                <tbody id="users-table-body">
-                                    <!-- Данные загружаются через JS -->
+                                <tbody id="usersTableBody">
+                                    <!-- Данные загрузятся через JS -->
                                 </tbody>
                             </table>
                         </div>
                         
-                        <!-- Пагинация -->
-                        <div class="pagination">
-                            <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
-                            <span class="page-info">Страница 1 из 1</span>
-                            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                        <div class="table-footer">
+                            <div class="pagination-info">
+                                Показано <span id="usersShown">0</span> из <span id="usersTotal">0</span>
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="pagination-current">1</span>
+                                <button class="pagination-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </section>
-                
-                <!-- Вкладка: РАСПИСАНИЕ -->
-                <section id="tab-schedule" class="admin-tab">
-                    <div class="tab-header">
-                        <h2>Управление расписанием</h2>
-                        <div class="tab-actions">
-                            <button class="btn btn-primary" id="add-schedule-btn">
-                                <i class="fas fa-plus"></i> Добавить расписание
+                    </section>
+
+                    <!-- Настройки -->
+                    <section class="content-section" id="section-settings">
+                        <div class="section-header">
+                            <h1 class="section-title">Настройки системы</h1>
+                        </div>
+                        
+                        <div class="settings-tabs">
+                            <button class="settings-tab active" data-tab="general">Основные</button>
+                            <button class="settings-tab" data-tab="ai">AI Настройки</button>
+                            <button class="settings-tab" data-tab="security">Безопасность</button>
+                            <button class="settings-tab" data-tab="appearance">Внешний вид</button>
+                        </div>
+                        
+                        <div class="settings-content">
+                            <form id="settingsForm">
+                                <!-- Основные настройки -->
+                                <div class="settings-panel active" id="panel-general">
+                                    <div class="form-group">
+                                        <label>Название системы</label>
+                                        <input type="text" class="form-control" id="systemName" value="Leo Assistant">
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Класс по умолчанию</label>
+                                            <select class="form-control" id="defaultClass">
+                                                <option value="7B">7Б класс</option>
+                                                <option value="7A">7А класс</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Очки за задание</label>
+                                            <input type="number" class="form-control" id="pointsPerTask" value="50">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Описание системы</label>
+                                        <textarea class="form-control" id="systemDescription" rows="3">Умный помощник для 7Б класса</textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- AI Настройки -->
+                                <div class="settings-panel" id="panel-ai">
+                                    <div class="form-group">
+                                        <label>Режим работы AI</label>
+                                        <select class="form-control" id="aiMode">
+                                            <option value="basic">Базовый (быстрый)</option>
+                                            <option value="advanced" selected>Продвинутый (точный)</option>
+                                            <option value="learning">Обучающийся</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Максимальная длина ответа</label>
+                                        <input type="range" class="form-range" id="aiMaxLength" min="100" max="2000" value="500">
+                                        <div class="range-value">
+                                            <span id="aiLengthValue">500 символов</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="aiLearning" checked>
+                                        <label class="form-check-label" for="aiLearning">Включить самообучение</label>
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="aiProfanityFilter" checked>
+                                        <label class="form-check-label" for="aiProfanityFilter">Фильтр ненормативной лексики</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Безопасность -->
+                                <div class="settings-panel" id="panel-security">
+                                    <div class="form-group">
+                                        <label>Требовать подтверждение email</label>
+                                        <select class="form-control" id="emailVerification">
+                                            <option value="true" selected>Да</option>
+                                            <option value="false">Нет</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Максимальное количество попыток входа</label>
+                                        <input type="number" class="form-control" id="maxLoginAttempts" value="5" min="1" max="10">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Блокировка при превышении (минут)</label>
+                                        <input type="number" class="form-control" id="lockoutTime" value="15" min="1" max="1440">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Пароль администратора</label>
+                                        <input type="password" class="form-control" id="adminPassword" placeholder="Новый пароль...">
+                                        <small class="form-hint">Оставьте пустым, чтобы не менять</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Внешний вид -->
+                                <div class="settings-panel" id="panel-appearance">
+                                    <div class="form-group">
+                                        <label>Тема оформления</label>
+                                        <div class="theme-selector">
+                                            <label class="theme-option">
+                                                <input type="radio" name="theme" value="dark" checked>
+                                                <div class="theme-preview dark">
+                                                    <i class="fas fa-moon"></i>
+                                                    <span>Темная</span>
+                                                </div>
+                                            </label>
+                                            <label class="theme-option">
+                                                <input type="radio" name="theme" value="light">
+                                                <div class="theme-preview light">
+                                                    <i class="fas fa-sun"></i>
+                                                    <span>Светлая</span>
+                                                </div>
+                                            </label>
+                                            <label class="theme-option">
+                                                <input type="radio" name="theme" value="auto">
+                                                <div class="theme-preview auto">
+                                                    <i class="fas fa-adjust"></i>
+                                                    <span>Авто</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Акцентный цвет</label>
+                                        <div class="color-picker">
+                                            <input type="color" id="accentColor" value="#6366f1">
+                                            <div class="color-presets">
+                                                <button type="button" class="color-preset" style="background: #6366f1;" data-color="#6366f1"></button>
+                                                <button type="button" class="color-preset" style="background: #10b981;" data-color="#10b981"></button>
+                                                <button type="button" class="color-preset" style="background: #f59e0b;" data-color="#f59e0b"></button>
+                                                <button type="button" class="color-preset" style="background: #ef4444;" data-color="#ef4444"></button>
+                                                <button type="button" class="color-preset" style="background: #8b5cf6;" data-color="#8b5cf6"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Шрифт интерфейса</label>
+                                        <select class="form-control" id="interfaceFont">
+                                            <option value="Inter" selected>Inter</option>
+                                            <option value="Roboto">Roboto</option>
+                                            <option value="Open Sans">Open Sans</option>
+                                            <option value="Montserrat">Montserrat</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <div class="settings-actions">
+                                <button class="btn-primary" id="saveSettings">
+                                    <i class="fas fa-save"></i>
+                                    Сохранить настройки
+                                </button>
+                                <button class="btn-secondary" id="resetSettings">
+                                    <i class="fas fa-undo"></i>
+                                    Сбросить к стандартным
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AI и обучение -->
+                    <section class="content-section" id="section-ai">
+                        <div class="section-header">
+                            <h1 class="section-title">Управление нейросетью</h1>
+                            <div class="section-actions">
+                                <button class="btn-primary" id="trainAI">
+                                    <i class="fas fa-play"></i>
+                                    Запустить обучение
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-status">
+                            <div class="status-card">
+                                <div class="status-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="status-info">
+                                    <h3>Состояние нейросети</h3>
+                                    <div class="status-details">
+                                        <div class="status-item">
+                                            <span class="status-label">Обучено ответов:</span>
+                                            <span class="status-value" id="aiTrainedAnswers">0</span>
+                                        </div>
+                                        <div class="status-item">
+                                            <span class="status-label">Точность:</span>
+                                            <span class="status-value" id="aiAccuracy">0%</span>
+                                        </div>
+                                        <div class="status-item">
+                                            <span class="status-label">Последнее обучение:</span>
+                                            <span class="status-value" id="aiLastTrain">Никогда</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="training-progress">
+                                <div class="progress-header">
+                                    <h3>Прогресс обучения</h3>
+                                    <span id="trainingProgress">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="trainingFill" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-stats">
+                                    <div class="progress-stat">
+                                        <span class="stat-label">Обработано:</span>
+                                        <span class="stat-value" id="processedItems">0/0</span>
+                                    </div>
+                                    <div class="progress-stat">
+                                        <span class="stat-label">Время:</span>
+                                        <span class="stat-value" id="trainingTime">0с</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-controls">
+                            <button class="btn-control" id="backupAI">
+                                <i class="fas fa-download"></i>
+                                Резервная копия
                             </button>
-                            <button class="btn btn-secondary" id="import-schedule">
-                                <i class="fas fa-file-import"></i> Импорт Excel
+                            <button class="btn-control" id="restoreAI">
+                                <i class="fas fa-upload"></i>
+                                Восстановить
+                            </button>
+                            <button class="btn-control danger" id="resetAI">
+                                <i class="fas fa-trash"></i>
+                                Сбросить знания
                             </button>
                         </div>
-                    </div>
-                    
-                    <div class="schedule-editor">
-                        <!-- Здесь будет редактор расписания -->
-                    </div>
-                </section>
-                
-                <!-- Вкладка: ОБУЧЕНИЕ AI -->
-                <section id="tab-ai-training" class="admin-tab">
-                    <div class="tab-header">
-                        <h2>Обучение нейросети</h2>
-                        <div class="tab-actions">
-                            <button class="btn btn-primary" id="train-ai-btn">
-                                <i class="fas fa-brain"></i> Начать обучение
-                            </button>
-                            <button class="btn btn-secondary" id="import-knowledge">
-                                <i class="fas fa-file-import"></i> Импорт базы знаний
-                            </button>
+                    </section>
+
+                    <!-- Логи -->
+                    <section class="content-section" id="section-logs">
+                        <div class="section-header">
+                            <h1 class="section-title">Системные логи</h1>
+                            <div class="section-actions">
+                                <button class="btn-secondary" id="clearLogs">
+                                    <i class="fas fa-trash"></i>
+                                    Очистить логи
+                                </button>
+                                <button class="btn-secondary" id="exportLogs">
+                                    <i class="fas fa-download"></i>
+                                    Экспорт логов
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="ai-training-container">
-                        <!-- Здесь будет интерфейс обучения AI -->
-                    </div>
-                </section>
-                
-                <!-- Остальные вкладки... -->
-                
-            </div>
-            
-            <!-- Системные уведомления -->
-            <div class="system-notifications">
-                <div class="notification success">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Система работает стабильно</span>
+                        
+                        <div class="logs-toolbar">
+                            <div class="toolbar-left">
+                                <select class="filter-select" id="logLevel">
+                                    <option value="all">Все уровни</option>
+                                    <option value="info">Информация</option>
+                                    <option value="warning">Предупреждения</option>
+                                    <option value="error">Ошибки</option>
+                                    <option value="security">Безопасность</option>
+                                </select>
+                                <input type="date" class="date-input" id="logDateFrom">
+                                <input type="date" class="date-input" id="logDateTo">
+                            </div>
+                            <div class="toolbar-right">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Поиск по логам..." id="logsSearch">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="logs-container">
+                            <div class="logs-list" id="logsList">
+                                <!-- Логи будут загружены динамически -->
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+
+        <!-- Модальные окна -->
+        <div class="modal" id="userModal">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 id="modalUserTitle">Добавить пользователя</h3>
+                    <button class="modal-close" onclick="Admin.closeModal('userModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <input type="hidden" id="userId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Имя *</label>
+                                <input type="text" class="form-control" id="userName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Фамилия *</label>
+                                <input type="text" class="form-control" id="userLastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Логин *</label>
+                            <input type="text" class="form-control" id="userLogin" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="userEmail">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Пароль *</label>
+                                <input type="password" class="form-control" id="userPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Подтверждение *</label>
+                                <input type="password" class="form-control" id="userConfirmPassword" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Роль</label>
+                                <select class="form-control" id="userRole">
+                                    <option value="student">Ученик</option>
+                                    <option value="teacher">Учитель</option>
+                                    <option value="admin">Администратор</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Класс</label>
+                                <select class="form-control" id="userClass">
+                                    <option value="7B">7Б</option>
+                                    <option value="7A">7А</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="Admin.closeModal('userModal')">
+                        Отмена
+                    </button>
+                    <button class="btn-primary" onclick="Admin.saveUser()">
+                        <i class="fas fa-save"></i>
+                        Сохранить
+                    </button>
                 </div>
             </div>
-        </main>
-    </div>
-    
-    <!-- Модальные окна -->
-    <div class="modal" id="user-modal">
-        <div class="modal-content large">
-            <h3>Добавление пользователя</h3>
-            <form id="user-form">
-                <!-- Форма добавления пользователя -->
-            </form>
         </div>
+
+        <!-- Уведомления -->
+        <div class="toast-container" id="toastContainer"></div>
     </div>
-    
-    <!-- Скрипты -->
-    <script src="./js/app.js"></script>
-    <script src="./js/admin.js"></script>
+
+    <!-- Библиотеки -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Инициализация админки
-        document.addEventListener('DOMContentLoaded', () => {
-            new AdminPanel();
-            
-            // Переключение вкладок
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const tab = item.dataset.tab;
-                    
-                    // Обновляем активные элементы
-                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-                    
-                    item.classList.add('active');
-                    document.getElementById(`tab-${tab}`).classList.add('active');
-                    document.getElementById('admin-title').textContent = item.querySelector('span').textContent;
-                });
-            });
-            
-            // Выход из админки
-            document.getElementById('admin-logout').addEventListener('click', () => {
-                window.leoApp.logout();
-            });
-        });
-    </script>
+    
+    <!-- Основной код -->
+    <script src="js/database.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
