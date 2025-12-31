@@ -5,94 +5,692 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEO ASSIST - Панель ученика</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Анимация загрузки */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Дополнительные стили для дашборда */
+        :root {
+            --sidebar-width: 280px;
+            --primary: #00c6ff;
+            --primary-dark: #0072ff;
+            --secondary: #ff6b9d;
+            --accent: #00ff88;
+            --dark: #0a0a0a;
+            --dark-blue: #0a0a2a;
+            --card-bg: rgba(15, 15, 30, 0.9);
+            --card-border: rgba(0, 198, 255, 0.3);
         }
         
-        .loading {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: var(--dark);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--dark) 100%);
+            z-index: -1;
+        }
+        
+        .dashboard-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-size: 24px;
-            color: #00c6ff;
+            min-height: 100vh;
         }
         
-        .hidden {
-            display: none !important;
+        /* ===== САЙДБАР ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-info h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .user-class {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 198, 255, 0.1);
+            color: var(--primary);
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .stat:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #8a9bb2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 25px 0;
+            overflow-y: auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            color: #8a9bb2;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: rgba(0, 198, 255, 0.5);
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 198, 255, 0.1);
+            color: white;
+            border-left-color: var(--primary);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .level-progress {
+            padding: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .sidebar-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .btn-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8a9bb2;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .btn-icon.logout:hover {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+        
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .main-header {
+            padding: 25px 40px;
+            background: rgba(15, 15, 30, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+        
+        .header-left h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header-left p {
+            margin: 0;
+            color: #8a9bb2;
+            font-size: 14px;
+        }
+        
+        .datetime {
+            text-align: right;
+        }
+        
+        .datetime .time {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+        
+        .datetime .date {
+            font-size: 14px;
+            color: #8a9bb2;
+        }
+        
+        /* ===== КОНТЕНТ ===== */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px 40px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 25px;
+        }
+        
+        .widget {
+            background: rgba(20, 20, 35, 0.8);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        
+        .widget:hover {
+            border-color: rgba(0, 198, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .widget.large {
+            grid-column: span 8;
+        }
+        
+        .widget.medium {
+            grid-column: span 4;
+        }
+        
+        .widget.small {
+            grid-column: span 3;
+        }
+        
+        @media (max-width: 1200px) {
+            .widget.large {
+                grid-column: span 12;
+            }
+            .widget.medium {
+                grid-column: span 6;
+            }
+            .widget.small {
+                grid-column: span 4;
+            }
+        }
+        
+        .widget-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .widget-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .widget-body {
+            padding: 30px;
+        }
+        
+        /* Виджет: Сегодня */
+        .today-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .current-lesson {
+            grid-column: span 2;
+            background: rgba(0, 198, 255, 0.1);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+        }
+        
+        .lesson-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .lesson-details .subject {
+            font-size: 22px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .lesson-details .room {
+            padding: 8px 16px;
+            background: rgba(0, 198, 255, 0.2);
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Виджет: AI Помощник */
+        .ai-chat {
+            display: flex;
+            flex-direction: column;
+            height: 320px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .message .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .message.user .avatar {
+            background: linear-gradient(135deg, var(--secondary), #ff2e6e);
+        }
+        
+        .message .content {
+            max-width: 70%;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 15px;
+            border-radius: 18px;
+        }
+        
+        .message.user .content {
+            background: rgba(0, 198, 255, 0.2);
+        }
+        
+        .message .text {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+            color: white;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .chat-input button {
+            width: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Виджет: Рейтинг */
+        .rating-list {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        
+        .rating-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+        
+        .rating-item.current-user {
+            background: rgba(0, 198, 255, 0.1);
+        }
+        
+        .rating-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), #ff2e6e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        /* Виджет: Быстрые действия */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 25px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-action:hover {
+            background: rgba(0, 198, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .quick-action i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+        
+        /* Виджет: Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(0, 198, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+        }
+        
+        .stat-data .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 3px;
+        }
+        
+        /* Секции */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .widget.large,
+            .widget.medium,
+            .widget.small {
+                grid-column: span 1;
+            }
+            
+            .today-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .current-lesson {
+                grid-column: span 1;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Экран загрузки -->
-    <div id="loading-screen" class="loading">
-        <div class="loading-content">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Загрузка панели...</p>
-        </div>
-    </div>
-    
     <!-- Частицы на фоне -->
     <div id="particles-js"></div>
     
-    <!-- Основной контейнер (скрыт до загрузки) -->
-    <div id="dashboard-container" class="dashboard-container hidden">
+    <!-- Главный контейнер -->
+    <div class="dashboard-container">
         <!-- Сайдбар -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="user-profile">
-                    <div class="user-avatar" id="sidebar-avatar">ЛУ</div>
+                    <div class="user-avatar" id="user-avatar">ЛУ</div>
                     <div class="user-info">
-                        <h3 id="sidebar-name">Ученик 7Б</h3>
-                        <span class="user-status online"></span>
+                        <h3 id="user-name">Загрузка...</h3>
+                        <span class="user-class">7Б класс</span>
                     </div>
                 </div>
                 
                 <div class="user-stats">
                     <div class="stat">
-                        <div class="stat-value" id="sidebar-points">0</div>
+                        <div class="stat-value" id="user-points">0</div>
                         <div class="stat-label">Очки</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value" id="sidebar-level">1</div>
+                        <div class="stat-value" id="user-level">1</div>
                         <div class="stat-label">Уровень</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="user-rank">-</div>
+                        <div class="stat-label">Место</div>
                     </div>
                 </div>
             </div>
             
+            <!-- Навигация -->
             <nav class="sidebar-nav">
-                <a href="#dashboard" class="nav-item active" onclick="switchSection('dashboard')">
+                <div class="nav-item active" onclick="switchSection('dashboard')">
                     <i class="fas fa-home"></i>
                     <span>Главная</span>
-                </a>
-                <a href="#schedule" class="nav-item" onclick="switchSection('schedule')">
+                </div>
+                <div class="nav-item" onclick="switchSection('schedule')">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Расписание</span>
-                </a>
-                <a href="#ai" class="nav-item" onclick="switchSection('ai')">
+                </div>
+                <div class="nav-item" onclick="switchSection('tasks')">
+                    <i class="fas fa-tasks"></i>
+                    <span>Задания</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('ai')">
                     <i class="fas fa-robot"></i>
                     <span>AI Помощник</span>
-                </a>
-                <a href="#games" class="nav-item" onclick="switchSection('games')">
-                    <i class="fas fa-gamepad"></i>
-                    <span>Игры</span>
-                </a>
-                <a href="#rating" class="nav-item" onclick="switchSection('rating')">
+                </div>
+                <div class="nav-item" onclick="switchSection('rating')">
                     <i class="fas fa-trophy"></i>
                     <span>Рейтинг</span>
-                </a>
+                </div>
+                <div class="nav-item" onclick="switchSection('games')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Игры</span>
+                </div>
             </nav>
             
+            <!-- Прогресс уровня -->
+            <div class="level-progress">
+                <div class="progress-info">
+                    <span>До уровня <span id="next-level">2</span></span>
+                    <span id="points-needed">1000 очков</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="level-progress-bar"></div>
+                </div>
+            </div>
+            
+            <!-- Футер сайдбара -->
             <div class="sidebar-footer">
-                <button class="btn-icon" onclick="refreshData()" title="Обновить">
+                <button class="btn-icon" title="Обновить" onclick="loadUserData()">
                     <i class="fas fa-sync-alt"></i>
                 </button>
-                <button class="btn-icon logout" onclick="logout()" title="Выйти">
+                <button class="btn-icon logout" title="Выйти" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -104,266 +702,324 @@
             <header class="main-header">
                 <div class="header-left">
                     <h1 id="page-title">Главная панель</h1>
-                    <p id="page-subtitle">Добро пожаловать</p>
+                    <p>Добро пожаловать в Leo Assistant</p>
                 </div>
                 
                 <div class="header-right">
                     <div class="datetime">
-                        <div class="time" id="current-time">--:--</div>
-                        <div class="date" id="current-date">-- --- ----</div>
+                        <div class="time" id="current-time">00:00</div>
+                        <div class="date" id="current-date">1 января 2024</div>
                     </div>
                 </div>
             </header>
             
-            <!-- Контентные секции -->
+            <!-- Контент -->
             <div class="content-area">
-                <!-- Главная -->
+                <!-- Секция: Главная -->
                 <section id="section-dashboard" class="content-section active">
-                    <div class="welcome-card">
-                        <h2>Привет, <span id="welcome-name">Ученик</span>! 👋</h2>
-                        <p>Добро пожаловать в Leo Assistant - твой помощник в учёбе.</p>
-                    </div>
-                    
                     <div class="dashboard-grid">
-                        <!-- Расписание на сегодня -->
+                        <!-- Виджет: Сегодня -->
                         <div class="widget large">
                             <div class="widget-header">
-                                <h3><i class="fas fa-calendar-day"></i> Сегодня</h3>
-                                <span id="today-date">Понедельник</span>
+                                <h3><i class="fas fa-sun"></i> Сегодня</h3>
+                                <span id="today-date"></span>
                             </div>
                             <div class="widget-body">
-                                <div id="today-lessons">
-                                    <div class="loading-lesson">
-                                        <i class="fas fa-spinner fa-spin"></i>
-                                        <span>Загрузка расписания...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- AI Помощник -->
-                        <div class="widget medium">
-                            <div class="widget-header">
-                                <h3><i class="fas fa-robot"></i> AI Помощник</h3>
-                                <span class="ai-status online"></span>
-                            </div>
-                            <div class="widget-body">
-                                <div class="ai-quick">
-                                    <div class="ai-message">
-                                        <div class="avatar">🤖</div>
-                                        <div class="message">
-                                            <p>Привет! Я Лео. Задайте вопрос:</p>
+                                <div class="today-info">
+                                    <div class="current-lesson">
+                                        <div class="lesson-status">
+                                            <span id="lesson-status-text">Нет урока</span>
+                                        </div>
+                                        <div class="lesson-details">
+                                            <span class="subject" id="current-subject">Отдых</span>
+                                            <span class="room" id="current-room">-</span>
                                         </div>
                                     </div>
                                     
-                                    <div class="ai-input">
-                                        <input type="text" id="quick-question" placeholder="Спросить о...">
-                                        <button onclick="askAI()">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </button>
+                                    <div class="next-lesson">
+                                        <h4>Следующий урок:</h4>
+                                        <div id="next-lesson-info">Загрузка...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Виджет: AI Помощник -->
+                        <div class="widget medium">
+                            <div class="widget-header">
+                                <h3><i class="fas fa-robot"></i> AI Помощник</h3>
+                                <span class="ai-status">Online</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="ai-chat">
+                                    <div class="chat-messages" id="chat-messages">
+                                        <div class="message ai">
+                                            <div class="avatar">🤖</div>
+                                            <div class="content">
+                                                <div class="text">Привет! Я Лео, ваш помощник. Чем могу помочь?</div>
+                                            </div>
+                                        </div>
                                     </div>
                                     
-                                    <div class="quick-questions">
-                                        <button class="quick-q" onclick="setQuestion('Какое расписание?')">
-                                            Расписание
-                                        </button>
-                                        <button class="quick-q" onclick="setQuestion('Что задали?')">
-                                            Домашнее
-                                        </button>
-                                        <button class="quick-q" onclick="setQuestion('Помощь с алгеброй')">
-                                            Алгебра
+                                    <div class="chat-input">
+                                        <input type="text" id="ai-input" placeholder="Задайте вопрос..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                                        <button onclick="sendMessage()">
+                                            <i class="fas fa-paper-plane"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Быстрые действия -->
+                        <!-- Виджет: Рейтинг -->
+                        <div class="widget medium">
+                            <div class="widget-header">
+                                <h3><i class="fas fa-trophy"></i> Рейтинг класса</h3>
+                            </div>
+                            <div class="widget-body">
+                                <div class="rating-list" id="rating-list">
+                                    <!-- Рейтинг загружается через JS -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Виджет: Быстрые действия -->
                         <div class="widget small">
                             <div class="widget-header">
                                 <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
                             </div>
                             <div class="widget-body">
-                                <div class="quick-actions">
-                                    <button class="quick-action" onclick="addTask()">
-                                        <i class="fas fa-plus"></i>
-                                        <span>Задача</span>
-                                    </button>
+                                <div class="quick-actions-grid">
                                     <button class="quick-action" onclick="switchSection('schedule')">
                                         <i class="fas fa-calendar"></i>
                                         <span>Расписание</span>
+                                    </button>
+                                    <button class="quick-action" onclick="switchSection('tasks')">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>Задания</span>
+                                    </button>
+                                    <button class="quick-action" onclick="switchSection('ai')">
+                                        <i class="fas fa-robot"></i>
+                                        <span>AI Помощник</span>
                                     </button>
                                     <button class="quick-action" onclick="switchSection('games')">
                                         <i class="fas fa-gamepad"></i>
                                         <span>Игры</span>
                                     </button>
-                                    <button class="quick-action" onclick="showNotes()">
-                                        <i class="fas fa-sticky-note"></i>
-                                        <span>Заметки</span>
-                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Виджет: Статистика -->
+                        <div class="widget small">
+                            <div class="widget-header">
+                                <h3><i class="fas fa-chart-bar"></i> Статистика</h3>
+                            </div>
+                            <div class="widget-body">
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                                        <div class="stat-data">
+                                            <div class="value" id="stat-completed">0</div>
+                                            <div class="label">Выполнено</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                                        <div class="stat-data">
+                                            <div class="value" id="stat-streak">0</div>
+                                            <div class="label">Дней подряд</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
                 
-                <!-- Расписание -->
+                <!-- Секция: Расписание -->
                 <section id="section-schedule" class="content-section">
                     <div class="section-header">
                         <h2><i class="fas fa-calendar-alt"></i> Расписание 7Б класса</h2>
-                        <div class="week-selector">
-                            <button onclick="prevWeek()"><i class="fas fa-chevron-left"></i></button>
-                            <span id="week-display">Текущая неделя</span>
-                            <button onclick="nextWeek()"><i class="fas fa-chevron-right"></i></button>
-                        </div>
                     </div>
-                    
-                    <div class="schedule-container" id="full-schedule">
+                    <div class="schedule-container" id="schedule-container">
                         <!-- Расписание загружается через JS -->
                     </div>
                 </section>
                 
-                <!-- AI Помощник -->
-                <section id="section-ai" class="content-section">
-                    <div class="ai-container">
-                        <div class="ai-header">
-                            <div class="ai-avatar">
-                                <div class="avatar-large">🤖</div>
-                                <div class="ai-info">
-                                    <h3>Leo Assistant</h3>
-                                    <span class="ai-status-text">Online</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="ai-chat">
-                            <div class="chat-history" id="ai-chat-history">
-                                <!-- История чата -->
-                            </div>
-                            
-                            <div class="chat-input">
-                                <textarea 
-                                    id="ai-chat-input" 
-                                    placeholder="Напишите ваш вопрос..."
-                                    rows="2"
-                                ></textarea>
-                                <button onclick="sendAI()">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                        </div>
+                <!-- Секция: Задания -->
+                <section id="section-tasks" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> Мои задания</h2>
+                        <button class="btn-primary" onclick="addTask()">
+                            <i class="fas fa-plus"></i> Новое задание
+                        </button>
+                    </div>
+                    <div class="tasks-list" id="tasks-list">
+                        <!-- Задания загружаются через JS -->
                     </div>
                 </section>
                 
-                <!-- Игры -->
+                <!-- Секция: Игры -->
                 <section id="section-games" class="content-section">
-                    <div class="games-header">
+                    <div class="section-header">
                         <h2><i class="fas fa-gamepad"></i> Обучающие игры</h2>
-                        <p>Играйте и зарабатывайте очки!</p>
                     </div>
-                    
-                    <div class="games-grid" id="games-list">
+                    <div class="games-grid" id="games-grid">
                         <!-- Игры загружаются через JS -->
-                    </div>
-                </section>
-                
-                <!-- Рейтинг -->
-                <section id="section-rating" class="content-section">
-                    <div class="rating-container">
-                        <div class="rating-header">
-                            <h2><i class="fas fa-trophy"></i> Рейтинг класса</h2>
-                            <select id="rating-filter" onchange="updateRating()">
-                                <option value="all">Все время</option>
-                                <option value="week">За неделю</option>
-                                <option value="month">За месяц</option>
-                            </select>
-                        </div>
-                        
-                        <div class="rating-list" id="class-rating">
-                            <!-- Рейтинг загружается через JS -->
-                        </div>
                     </div>
                 </section>
             </div>
         </main>
     </div>
     
-    <!-- Уведомления -->
-    <div class="notifications" id="notifications"></div>
-    
     <!-- Скрипты -->
     <script src="./js/particles.min.js"></script>
     <script>
-        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
-        let currentUser = null;
-        let currentSection = 'dashboard';
+        // Проверка авторизации
+        checkAuth();
         
-        // ========== ФУНКЦИИ ДАШБОРДА ==========
-        
-        // Проверка авторизации и загрузка данных
-        function initDashboard() {
-            console.log('🚀 Инициализация дашборда...');
-            
-            // Проверяем сессию
+        function checkAuth() {
             const session = localStorage.getItem('leo_session');
             if (!session) {
-                console.log('❌ Нет сессии, редирект на вход');
                 window.location.href = 'index.html';
                 return;
             }
             
             try {
-                currentUser = JSON.parse(session);
-                console.log('✅ Пользователь загружен:', currentUser);
-                
-                // Скрываем экран загрузки, показываем дашборд
-                document.getElementById('loading-screen').classList.add('hidden');
-                document.getElementById('dashboard-container').classList.remove('hidden');
-                
-                // Загружаем данные пользователя
-                loadUserData();
-                loadSchedule();
-                loadGames();
-                loadRating();
-                initAI();
-                updateTime();
-                
-                // Запускаем обновление времени
-                setInterval(updateTime, 60000);
-                
-                // Инициализация частиц
-                initParticles();
-                
-                console.log('✅ Дашборд готов!');
-                
-            } catch (error) {
-                console.error('❌ Ошибка загрузки дашборда:', error);
-                logout();
+                window.currentUser = JSON.parse(session);
+                initDashboard();
+            } catch (e) {
+                localStorage.removeItem('leo_session');
+                window.location.href = 'index.html';
             }
         }
         
-        // Загрузка данных пользователя
+        function initDashboard() {
+            // Инициализация частиц
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#00c6ff", "#0072ff"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#00c6ff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: { enable: true, speed: 1.5, direction: "none", random: true }
+                }
+            });
+            
+            // Загрузка данных пользователя
+            loadUserData();
+            
+            // Обновление времени
+            updateDateTime();
+            setInterval(updateDateTime, 60000);
+            
+            // Загрузка расписания
+            loadSchedule();
+            
+            // Загрузка рейтинга
+            loadRating();
+            
+            // Загрузка игр
+            loadGames();
+            
+            console.log('✅ Дашборд инициализирован для:', window.currentUser.fullname);
+        }
+        
         function loadUserData() {
-            if (!currentUser) return;
+            const user = window.currentUser;
             
-            // Обновляем данные из базы
-            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
-            const freshUser = users.find(u => u.id === currentUser.id);
-            if (freshUser) {
-                currentUser = freshUser;
-                localStorage.setItem('leo_session', JSON.stringify(currentUser));
-            }
+            // Основная информация
+            document.getElementById('user-name').textContent = user.fullname;
+            document.getElementById('user-avatar').textContent = user.avatar || 'ЛУ';
             
-            // Отображаем данные
-            document.getElementById('sidebar-avatar').textContent = currentUser.avatar || 'УЧ';
-            document.getElementById('sidebar-name').textContent = currentUser.fullname;
-            document.getElementById('sidebar-points').textContent = currentUser.points || 0;
-            document.getElementById('sidebar-level').textContent = currentUser.level || 1;
-            document.getElementById('welcome-name').textContent = currentUser.fullname.split(' ')[0];
+            // Статистика
+            document.getElementById('user-points').textContent = user.points || 0;
+            document.getElementById('user-level').textContent = user.level || 1;
+            document.getElementById('user-rank').textContent = calculateRank();
+            
+            // Общая статистика
+            document.getElementById('stat-completed').textContent = user.completedTasks || 0;
+            document.getElementById('stat-streak').textContent = user.streak || 0;
+            
+            // Прогресс уровня
+            const level = user.level || 1;
+            const points = user.points || 0;
+            const pointsForLevel = level * 1000;
+            const progress = Math.min(100, (points / pointsForLevel) * 100);
+            
+            document.getElementById('level-progress-bar').style.width = `${progress}%`;
+            document.getElementById('next-level').textContent = level + 1;
+            document.getElementById('points-needed').textContent = `${pointsForLevel - points} очков`;
+            
+            // Обновляем текущий урок
+            updateCurrentLesson();
         }
         
-        // Загрузка расписания
+        function calculateRank() {
+            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+            const activeStudents = users
+                .filter(u => u.active && u.role === 'student')
+                .sort((a, b) => (b.points || 0) - (a.points || 0));
+            
+            const rank = activeStudents.findIndex(u => u.id === window.currentUser.id) + 1;
+            return rank > 0 ? rank : '-';
+        }
+        
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Время
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+            
+            // Дата
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'});
+            
+            // Дата для виджета "Сегодня"
+            document.getElementById('today-date').textContent = 
+                now.toLocaleDateString('ru-RU', { weekday: 'long' });
+        }
+        
+        function updateCurrentLesson() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const currentTime = hour * 60 + minute;
+            
+            // Простое определение текущего урока
+            if (hour >= 8 && hour < 14) {
+                document.getElementById('lesson-status-text').textContent = 'Утренние занятия';
+                document.getElementById('current-subject').textContent = 'Уроки';
+                document.getElementById('current-room').textContent = 'Классы';
+                document.getElementById('next-lesson-info').textContent = '14:00 - Дневные занятия';
+            } else if (hour >= 14 && hour < 18) {
+                document.getElementById('lesson-status-text').textContent = 'Дневные занятия';
+                document.getElementById('current-subject').textContent = 'Уроки';
+                document.getElementById('current-room').textContent = 'Классы';
+                document.getElementById('next-lesson-info').textContent = '18:00 - Вечерние занятия';
+            } else {
+                document.getElementById('lesson-status-text').textContent = 'Нет урока';
+                document.getElementById('current-subject').textContent = 'Отдых';
+                document.getElementById('current-room').textContent = '-';
+                document.getElementById('next-lesson-info').textContent = 'Завтра с 8:00';
+            }
+        }
+        
         function loadSchedule() {
+            const container = document.getElementById('schedule-container');
+            if (!container) return;
+            
+            // РЕАЛЬНОЕ РАСПИСАНИЕ 7Б КЛАССА
             const schedule = {
                 monday: [
                     { time: "13:10-13:50", subject: "История", room: "16 Каб" },
@@ -391,113 +1047,132 @@
                     { time: "16:30-17:10", subject: "Физика", room: "35 Каб" },
                     { time: "17:15-17:55", subject: "География", room: "22 Каб" },
                     { time: "18:00-18:40", subject: "Русский язык-пл", room: "32 Каб" }
-                ],
-                thursday: [
-                    { time: "13:10-13:50", subject: "Алгебра", room: "34 Каб" },
-                    { time: "14:00-14:40", subject: "Вероятность и Статистика", room: "34 Каб" },
-                    { time: "14:50-15:30", subject: "Английский язык", room: "12 Каб" },
-                    { time: "15:40-16:20", subject: "География", room: "22 Каб" },
-                    { time: "16:30-17:10", subject: "Русский язык", room: "32 Каб" },
-                    { time: "17:15-17:55", subject: "Литература", room: "32 Каб" },
-                    { time: "18:00-18:40", subject: "Физ-ра", room: "СЗ" }
-                ],
-                friday: [
-                    { time: "13:10-13:50", subject: "Алгебра", room: "34 Каб" },
-                    { time: "14:00-14:40", subject: "Английский язык/Информатика", room: "12 / 42" },
-                    { time: "14:50-15:30", subject: "Английский язык", room: "12 Каб" },
-                    { time: "15:40-16:20", subject: "Геометрия", room: "34 Каб" },
-                    { time: "16:30-17:10", subject: "Биология", room: "21 Каб" },
-                    { time: "17:15-17:55", subject: "Информатика/Английский язык", room: "42 / 12" },
-                    { time: "18:00-18:40", subject: "Математика-ВД", room: "34 Каб" }
-                ],
-                saturday: [
-                    { time: "12:20-13:00", subject: "Музыка", room: "АЗ" },
-                    { time: "13:10-13:50", subject: "Математика-пл", room: "34 Каб" },
-                    { time: "14:00-14:40", subject: "Химия", room: "33 Каб" },
-                    { time: "14:50-15:30", subject: "Физика", room: "35 Каб" },
-                    { time: "15:40-16:20", subject: "Математика-ВД", room: "34 Каб" },
-                    { time: "16:30-17:10", subject: "Физика-пл", room: "35 Каб" }
                 ]
             };
             
-            // Показываем сегодняшние уроки
-            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-            const today = new Date().getDay();
-            const todayKey = days[today];
-            const todayLessons = schedule[todayKey] || [];
+            const days = [
+                { key: 'monday', name: 'Понедельник' },
+                { key: 'tuesday', name: 'Вторник' },
+                { key: 'wednesday', name: 'Среда' },
+                { key: 'thursday', name: 'Четверг' },
+                { key: 'friday', name: 'Пятница' },
+                { key: 'saturday', name: 'Суббота' }
+            ];
             
-            const container = document.getElementById('today-lessons');
-            if (todayLessons.length > 0) {
-                let html = '';
-                todayLessons.forEach(lesson => {
-                    html += `
-                        <div class="lesson-item">
-                            <span class="lesson-time">${lesson.time}</span>
-                            <span class="lesson-subject">${lesson.subject}</span>
-                            <span class="lesson-room">${lesson.room}</span>
+            let html = '<div class="days-grid">';
+            
+            days.forEach(day => {
+                const lessons = schedule[day.key] || [];
+                
+                html += `
+                    <div class="day-card">
+                        <h3>${day.name}</h3>
+                        <div class="lessons-list">
+                `;
+                
+                if (lessons.length > 0) {
+                    lessons.forEach(lesson => {
+                        html += `
+                            <div class="lesson">
+                                <span class="time">${lesson.time}</span>
+                                <span class="subject">${lesson.subject}</span>
+                                <span class="room">${lesson.room}</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += `<div class="no-lessons">Нет занятий</div>`;
+                }
+                
+                html += `
                         </div>
-                    `;
-                });
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = '<div class="no-lessons">Сегодня занятий нет</div>';
-            }
+                    </div>
+                `;
+            });
             
-            // Обновляем дату
-            const dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-            document.getElementById('today-date').textContent = dayNames[today];
+            html += '</div>';
+            container.innerHTML = html;
         }
         
-        // Загрузка игр
+        function loadRating() {
+            const container = document.getElementById('rating-list');
+            if (!container) return;
+            
+            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+            const activeStudents = users
+                .filter(u => u.active && u.role === 'student')
+                .sort((a, b) => (b.points || 0) - (a.points || 0))
+                .slice(0, 5);
+            
+            if (activeStudents.length === 0) {
+                container.innerHTML = '<p>Пока нет активных учеников</p>';
+                return;
+            }
+            
+            let html = '';
+            activeStudents.forEach((user, index) => {
+                const isCurrent = user.id === window.currentUser.id;
+                const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `${index + 1}.`;
+                
+                html += `
+                    <div class="rating-item ${isCurrent ? 'current-user' : ''}">
+                        <div class="rating-rank">${medal}</div>
+                        <div class="rating-avatar">${user.avatar}</div>
+                        <div class="rating-info">
+                            <div class="rating-name">${user.fullname}</div>
+                            <div class="rating-points">${user.points || 0} очков</div>
+                        </div>
+                        ${isCurrent ? '<span class="you-badge">Вы</span>' : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
         function loadGames() {
+            const container = document.getElementById('games-grid');
+            if (!container) return;
+            
             const games = [
                 {
                     id: 1,
                     name: "Алгебраический вызов",
                     description: "Решайте уравнения 7 класса",
                     icon: "🧮",
-                    subject: "Алгебра",
                     color: "#00c6ff"
                 },
                 {
                     id: 2,
                     name: "Геометрический гений",
-                    description: "Задачи по геометрии",
+                    description: "Задачи по геометрии 7 класса",
                     icon: "📐",
-                    subject: "Геометрия",
                     color: "#ff6b9d"
                 },
                 {
                     id: 3,
                     name: "Физический эксперимент",
-                    description: "Задачи по физике",
+                    description: "Задачи по физике 7 класса",
                     icon: "⚡",
-                    subject: "Физика",
                     color: "#ffcc00"
                 },
                 {
                     id: 4,
                     name: "Химическая реакция",
-                    description: "Уравняйте уравнения",
+                    description: "Химия 7 класса",
                     icon: "🧪",
-                    subject: "Химия",
                     color: "#00ff88"
                 }
             ];
             
-            const container = document.getElementById('games-list');
             let html = '';
-            
             games.forEach(game => {
                 html += `
                     <div class="game-card" style="border-color: ${game.color}">
                         <div class="game-icon">${game.icon}</div>
                         <h3>${game.name}</h3>
                         <p>${game.description}</p>
-                        <div class="game-meta">
-                            <span class="game-subject">${game.subject}</span>
-                        </div>
-                        <button class="game-play" onclick="playGame(${game.id})">
+                        <button class="play-btn" onclick="startGame(${game.id})">
                             <i class="fas fa-play"></i> Играть
                         </button>
                     </div>
@@ -507,168 +1182,40 @@
             container.innerHTML = html;
         }
         
-        // Загрузка рейтинга
-        function loadRating() {
-            const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
-            const students = users
-                .filter(u => u.active && u.role === 'student')
-                .sort((a, b) => (b.points || 0) - (a.points || 0))
-                .slice(0, 10);
+        function sendMessage() {
+            const input = document.getElementById('ai-input');
+            const message = input.value.trim();
             
-            const container = document.getElementById('class-rating');
-            let html = '';
+            if (!message) return;
             
-            if (students.length > 0) {
-                students.forEach((student, index) => {
-                    const isCurrent = student.id === currentUser.id;
-                    const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `${index + 1}.`;
-                    
-                    html += `
-                        <div class="rating-item ${isCurrent ? 'current' : ''}">
-                            <span class="rank">${medal}</span>
-                            <span class="avatar">${student.avatar}</span>
-                            <span class="name">${student.fullname}</span>
-                            <span class="points">${student.points || 0} очков</span>
-                        </div>
-                    `;
-                });
-            } else {
-                html = '<div class="empty-rating">Нет данных о рейтинге</div>';
-            }
+            // Добавляем сообщение пользователя
+            addMessage(message, 'user');
+            input.value = '';
             
-            container.innerHTML = html;
-        }
-        
-        // Инициализация AI
-        function initAI() {
-            // Добавляем первое сообщение
-            addAIMessage("Привет! Я Лео, ваш помощник в учёбе. Чем могу помочь?", 'ai');
-        }
-        
-        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
-        
-        // Переключение секций
-        function switchSection(section) {
-            // Скрываем все секции
-            document.querySelectorAll('.content-section').forEach(s => {
-                s.classList.remove('active');
-            });
-            
-            // Скрываем все кнопки навигации
-            document.querySelectorAll('.nav-item').forEach(n => {
-                n.classList.remove('active');
-            });
-            
-            // Показываем выбранную секцию
-            document.getElementById(`section-${section}`).classList.add('active');
-            
-            // Активируем кнопку навигации
-            document.querySelector(`.nav-item[href="#${section}"]`).classList.add('active');
-            
-            // Обновляем заголовок
-            const titles = {
-                'dashboard': 'Главная панель',
-                'schedule': 'Расписание',
-                'ai': 'AI Помощник',
-                'games': 'Обучающие игры',
-                'rating': 'Рейтинг класса'
-            };
-            
-            document.getElementById('page-title').textContent = titles[section] || section;
-            currentSection = section;
-        }
-        
-        // Обновление времени
-        function updateTime() {
-            const now = new Date();
-            
-            // Время
-            document.getElementById('current-time').textContent = 
-                now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
-            
-            // Дата
-            document.getElementById('current-date').textContent = 
-                now.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'});
-        }
-        
-        // Обновление данных
-        function refreshData() {
-            showNotification('Данные обновлены', 'info');
-            loadUserData();
-            loadRating();
-        }
-        
-        // Выход из системы
-        function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                localStorage.removeItem('leo_session');
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // AI функции
-        function setQuestion(question) {
-            document.getElementById('quick-question').value = question;
-        }
-        
-        function askAI() {
-            const question = document.getElementById('quick-question').value;
-            if (!question.trim()) return;
-            
-            addAIMessage(question, 'user');
-            document.getElementById('quick-question').value = '';
-            
-            // Имитация ответа AI
+            // Ответ AI
             setTimeout(() => {
                 const responses = [
-                    "Отличный вопрос! Давайте разберемся вместе.",
-                    "Я могу помочь с этим. Нужны дополнительные детали?",
-                    "Это интересный вопрос. Давайте я поищу информацию.",
-                    "Понял ваш вопрос. Сейчас подготовлю ответ."
+                    "Интересный вопрос! Я ещё учусь, но скоро смогу отвечать на такие вопросы.",
+                    "Сейчас проверю эту информацию для вас.",
+                    "Это хороший вопрос! Давайте разберемся вместе.",
+                    "Я могу помочь с расписанием и заданиями. Что именно вас интересует?",
+                    "Для получения точного ответа обратитесь к учителю по этому предмету."
                 ];
                 
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addAIMessage(randomResponse, 'ai');
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(response, 'ai');
             }, 1000);
         }
         
-        function sendAI() {
-            const input = document.getElementById('ai-chat-input');
-            const question = input.value.trim();
-            
-            if (!question) return;
-            
-            addAIMessage(question, 'user', 'ai-chat-history');
-            input.value = '';
-            
-            // Имитация ответа AI
-            setTimeout(() => {
-                const responses = [
-                    "Я проанализировал ваш вопрос. Вот что я могу сказать...",
-                    "Это хороший вопрос для обсуждения с учителем.",
-                    "Давайте разберем этот вопрос по частям.",
-                    "Я нашел информацию по вашему вопросу."
-                ];
-                
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addAIMessage(randomResponse, 'ai', 'ai-chat-history');
-                
-                // Прокрутка вниз
-                const chat = document.getElementById('ai-chat-history');
-                chat.scrollTop = chat.scrollHeight;
-            }, 1500);
-        }
-        
-        function addAIMessage(text, sender, containerId = 'ai-chat-history') {
-            const container = document.getElementById(containerId);
+        function addMessage(text, sender) {
+            const container = document.getElementById('chat-messages');
             const message = document.createElement('div');
             
-            message.className = `ai-message ${sender}`;
+            message.className = `message ${sender}`;
             message.innerHTML = `
-                <div class="avatar">${sender === 'user' ? (currentUser?.avatar || 'У') : '🤖'}</div>
-                <div class="message">
-                    <p>${text}</p>
-                    <span class="time">${new Date().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})}</span>
+                <div class="avatar">${sender === 'user' ? window.currentUser.avatar : '🤖'}</div>
+                <div class="content">
+                    <div class="text">${text}</div>
                 </div>
             `;
             
@@ -676,102 +1223,135 @@
             container.scrollTop = container.scrollHeight;
         }
         
-        // Игры
-        function playGame(gameId) {
-            showNotification('Игра запускается...', 'info');
-            // Здесь будет логика игры
+        function switchSection(section) {
+            // Скрываем все секции
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            
+            // Убираем активный класс у всех кнопок
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Показываем выбранную секцию
+            document.getElementById(`section-${section}`).classList.add('active');
+            
+            // Активируем кнопку
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Обновляем заголовок
+            const titles = {
+                'dashboard': 'Главная панель',
+                'schedule': 'Расписание',
+                'tasks': 'Мои задания',
+                'ai': 'AI Помощник',
+                'rating': 'Рейтинг класса',
+                'games': 'Обучающие игры'
+            };
+            
+            document.getElementById('page-title').textContent = titles[section] || section;
         }
         
-        // Задачи
         function addTask() {
-            const task = prompt('Введите новую задачу:');
+            const title = prompt('Введите название задания:');
+            if (!title) return;
+            
+            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
+            
+            const newTask = {
+                id: Date.now(),
+                userId: window.currentUser.id,
+                title: title,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            tasks.push(newTask);
+            localStorage.setItem('leo_tasks', JSON.stringify(tasks));
+            
+            alert('Задание добавлено!');
+            loadTasks();
+        }
+        
+        function loadTasks() {
+            const container = document.getElementById('tasks-list');
+            if (!container) return;
+            
+            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
+            const userTasks = tasks.filter(t => t.userId === window.currentUser.id);
+            
+            if (userTasks.length === 0) {
+                container.innerHTML = '<p>Нет заданий</p>';
+                return;
+            }
+            
+            let html = '';
+            userTasks.forEach(task => {
+                html += `
+                    <div class="task ${task.completed ? 'completed' : ''}">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
+                               onchange="toggleTask(${task.id})">
+                        <span>${task.title}</span>
+                        <button onclick="deleteTask(${task.id})">×</button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function toggleTask(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
+            const task = tasks.find(t => t.id === taskId);
+            
             if (task) {
-                showNotification('Задача добавлена', 'success');
-            }
-        }
-        
-        function showNotes() {
-            showNotification('Заметки откроются скоро', 'info');
-        }
-        
-        // Навигация по неделям
-        function prevWeek() {
-            showNotification('Предыдущая неделя', 'info');
-        }
-        
-        function nextWeek() {
-            showNotification('Следующая неделя', 'info');
-        }
-        
-        function updateRating() {
-            showNotification('Рейтинг обновлен', 'info');
-            loadRating();
-        }
-        
-        // Уведомления
-        function showNotification(message, type = 'info') {
-            const container = document.getElementById('notifications');
-            const notification = document.createElement('div');
-            
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            
-            container.appendChild(notification);
-            
-            // Автоудаление
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
-        // Частицы
-        function initParticles() {
-            if (typeof particlesJS !== 'undefined') {
-                particlesJS('particles-js', {
-                    particles: {
-                        number: { value: 60, density: { enable: true, value_area: 800 } },
-                        color: { value: ["#00c6ff", "#0072ff", "#ff6b9d"] },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.3, random: true },
-                        size: { value: 3, random: true },
-                        line_linked: {
-                            enable: true,
-                            distance: 150,
-                            color: "#00c6ff",
-                            opacity: 0.2,
-                            width: 1
-                        },
-                        move: {
-                            enable: true,
-                            speed: 1.5,
-                            direction: "none",
-                            random: true
-                        }
+                task.completed = !task.completed;
+                
+                // Начисляем очки за выполнение
+                if (task.completed) {
+                    window.currentUser.points = (window.currentUser.points || 0) + 100;
+                    localStorage.setItem('leo_session', JSON.stringify(window.currentUser));
+                    
+                    // Обновляем в базе
+                    const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+                    const userIndex = users.findIndex(u => u.id === window.currentUser.id);
+                    if (userIndex !== -1) {
+                        users[userIndex].points = window.currentUser.points;
+                        localStorage.setItem('leo_users', JSON.stringify(users));
                     }
-                });
+                }
+                
+                localStorage.setItem('leo_tasks', JSON.stringify(tasks));
+                loadUserData();
             }
         }
         
-        // ========== ЗАПУСК ДАШБОРДА ==========
-        document.addEventListener('DOMContentLoaded', initDashboard);
+        function deleteTask(taskId) {
+            if (!confirm('Удалить задание?')) return;
+            
+            const tasks = JSON.parse(localStorage.getItem('leo_tasks') || '[]');
+            const filteredTasks = tasks.filter(t => t.id !== taskId);
+            
+            localStorage.setItem('leo_tasks', JSON.stringify(filteredTasks));
+            loadTasks();
+        }
         
-        // Добавляем глобальные функции
-        window.switchSection = switchSection;
-        window.refreshData = refreshData;
-        window.logout = logout;
-        window.setQuestion = setQuestion;
-        window.askAI = askAI;
-        window.sendAI = sendAI;
-        window.playGame = playGame;
-        window.addTask = addTask;
-        window.showNotes = showNotes;
-        window.prevWeek = prevWeek;
-        window.nextWeek = nextWeek;
-        window.updateRating = updateRating;
+        function startGame(gameId) {
+            alert(`Запуск игры ${gameId}. Игра в разработке!`);
+        }
+        
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                localStorage.removeItem('leo_session');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            // Уже инициализировано в checkAuth()
+        });
     </script>
 </body>
 </html>
