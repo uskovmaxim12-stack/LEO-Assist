@@ -1,45 +1,42 @@
-/* style.css - ИСПРАВЛЕННЫЕ СТИЛИ БЕЗ ПЕРЕКРЫТИЯ ТЕКСТА */
+/* style.css - ОСНОВНЫЕ СТИЛИ С ПРАВИЛЬНЫМИ ЧАСТИЦАМИ */
 
 :root {
-    --primary: #0099ff;
-    --primary-dark: #0077cc;
-    --secondary: #ff66aa;
+    --primary: #00c6ff;
+    --primary-dark: #0072ff;
+    --secondary: #ff0080;
     --accent: #00ff88;
-    --warning: #ffcc00;
-    --danger: #ff4444;
-    
-    --bg-dark: #0a0a0a;
-    --bg-darker: #000033;
-    --bg-card: rgba(15, 15, 25, 0.9);
-    --bg-input: rgba(255, 255, 255, 0.07);
-    
-    --text-light: #ffffff;
-    --text-gray: #a0a0a0;
-    --text-blue: #a0a0ff;
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --dark-gray: #1a1a1a;
+    --gray: #333333;
+    --light-gray: #888888;
+    --light: #ffffff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 20px rgba(0, 198, 255, 0.3);
 }
 
-/* Сброс и базовые стили */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
 }
 
 body {
-    background: var(--bg-dark);
-    color: var(--text-light);
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    line-height: 1.6;
+    background: var(--darker);
+    color: var(--light);
     min-height: 100vh;
     overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
-/* Частицы на фоне */
+/* Частицы НА ФОНЕ (как на вашем сайте) */
 #particles-js {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #0a0a2a 100%);
     z-index: -1;
 }
 
@@ -47,56 +44,446 @@ body {
 .main-container {
     display: flex;
     min-height: 100vh;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+    gap: 40px;
+}
+
+/* Левая панель с нейросетью */
+.left-panel {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 40px;
+}
+
+.neural-network {
+    background: rgba(10, 10, 10, 0.85);
+    border-radius: 25px;
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid rgba(0, 198, 255, 0.2);
+    box-shadow: var(--shadow), var(--glow);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 1s ease;
+}
+
+.neural-network h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+.neural-network .subtitle {
+    color: var(--light-gray);
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* Визуализация нейросети (упрощенная, с канвасом) */
+.neural-visualization {
     position: relative;
-    z-index: 1;
+    height: 250px;
+    margin: 40px 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
 }
 
-/* Адаптивные улучшения */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-    
-    .main-container {
-        padding: 10px;
-    }
+/* Функции */
+.features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
 }
 
-/* Улучшение читаемости текста */
-h1, h2, h3, h4 {
-    line-height: 1.3;
-    margin-bottom: 0.5em;
-}
-
-p {
-    margin-bottom: 1em;
-}
-
-/* Улучшение полей ввода */
-input, textarea, select {
-    font-size: 16px !important; /* Предотвращает увеличение в iOS */
-    line-height: 1.5;
-}
-
-/* Улучшение скроллбара */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s;
 }
 
-::-webkit-scrollbar-thumb {
+.feature:hover {
+    background: rgba(0, 198, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+.feature i {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.feature span {
+    font-weight: 500;
+}
+
+/* Правая панель с формой */
+.right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.auth-container {
+    background: rgba(10, 10, 10, 0.85);
+    border-radius: 25px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid rgba(0, 198, 255, 0.2);
+    box-shadow: var(--shadow), var(--glow);
+    backdrop-filter: blur(10px);
+    animation: slideInRight 1s ease;
+}
+
+/* Вкладки - ИСПРАВЛЕНЫ */
+.auth-tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    background: transparent;
+    border: none;
+    color: var(--light-gray);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab-btn:hover {
+    color: var(--light);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn.active {
     background: var(--primary);
-    border-radius: 4px;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+.tab-btn.admin-btn {
+    color: var(--secondary);
+}
+
+.tab-btn.admin-btn.active {
+    background: var(--secondary);
+}
+
+/* Формы */
+.auth-form {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.form-subtitle {
+    color: var(--light-gray);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+/* Поля ввода */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-gray);
+    font-size: 1.2rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 18px 20px 18px 55px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 2px solid transparent;
+    border-radius: 15px;
+    color: var(--light);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+}
+
+.input-group .show-password {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+/* Опции формы */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--light-gray);
+}
+
+.checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.forgot-password {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Чекбокс согласия */
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 25px 0;
+    color: var(--light-gray);
+    font-size: 0.9rem;
+}
+
+.form-checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.form-checkbox a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.form-checkbox a:hover {
+    text-decoration: underline;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(-1px);
+}
+
+.submit-btn.warning {
+    background: linear-gradient(90deg, var(--secondary), #cc0066);
+}
+
+/* Демо вход */
+.demo-login {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.demo-login p {
+    color: var(--light-gray);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.demo-btn {
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 198, 255, 0.3);
+    border-radius: 10px;
+    color: var(--light);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.demo-btn:hover {
+    background: rgba(0, 198, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Админ предупреждение */
+.admin-warning {
+    background: rgba(255, 0, 128, 0.1);
+    border: 1px solid rgba(255, 0, 128, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.admin-warning i {
+    color: var(--secondary);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.admin-warning p {
+    color: var(--light);
+    font-size: 0.9rem;
+}
+
+/* Сообщения */
+.message-box {
+    display: none;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-weight: 500;
+    animation: slideInUp 0.3s ease;
+}
+
+.message-box.success {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: var(--accent);
+}
+
+.message-box.error {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: #ff4444;
+}
+
+.message-box.warning {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    color: #ffc107;
+}
+
+.message-box.info {
+    background: rgba(0, 198, 255, 0.1);
+    border: 1px solid rgba(0, 198, 255, 0.3);
+    color: var(--primary);
+}
+
+/* Информация системы */
+.system-info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--light-gray);
+    font-size: 0.9rem;
+}
+
+.info-item i {
+    color: var(--primary);
+}
+
+.info-item .status {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.status.online {
+    color: var(--accent);
+}
+
+/* Примечание формы */
+.form-note {
+    color: var(--light-gray);
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 20px;
+    line-height: 1.4;
 }
 
 /* Анимации */
@@ -105,178 +492,77 @@ input, textarea, select {
     to { opacity: 1; }
 }
 
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 @keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-/* Утилиты */
-.text-center { text-align: center; }
-.mt-1 { margin-top: 0.5em; }
-.mt-2 { margin-top: 1em; }
-.mb-1 { margin-bottom: 0.5em; }
-.mb-2 { margin-bottom: 1em; }
-
-/* Специфичные исправления для форм */
-.input-group {
-    margin-bottom: 1.5em;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 1em 1em 1em 3em;
-    background: var(--bg-input);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    color: var(--text-light);
-    font-size: 1em;
-    transition: all 0.3s;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.1);
-}
-
-/* Исправление для маленьких экранов */
-@media (max-width: 480px) {
-    .input-group input {
-        padding: 0.8em 0.8em 0.8em 2.8em;
-        font-size: 14px;
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .main-container {
+        flex-direction: column;
+        gap: 20px;
     }
     
-    .submit-btn {
-        padding: 0.8em !important;
-        font-size: 16px !important;
+    .left-panel, .right-panel {
+        padding: 20px;
+    }
+    
+    .neural-network, .auth-container {
+        max-width: 100%;
     }
 }
 
-/* Исправление перекрытия текста */
-.auth-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    background: var(--bg-card);
-    border-radius: 25px;
-    overflow: hidden;
-    position: relative;
-}
-
-.welcome-side, .auth-side {
-    padding: 3em;
-    flex: 1;
-}
-
-@media (max-width: 900px) {
-    .auth-wrapper {
+@media (max-width: 768px) {
+    .main-container {
+        padding: 10px;
+    }
+    
+    .neural-network, .auth-container {
+        padding: 25px;
+    }
+    
+    .neural-network h1 {
+        font-size: 2.2rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .auth-tabs {
         flex-direction: column;
     }
     
-    .welcome-side, .auth-side {
-        padding: 2em;
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .system-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }
 
-/* Улучшение текста в списке возможностей */
-.features-list li {
-    display: flex;
-    align-items: flex-start;
-    margin: 1em 0;
-    padding: 0.5em 0;
-    color: var(--text-blue);
-    line-height: 1.4;
-}
-
-.features-list i {
-    color: var(--primary);
-    margin-right: 1em;
-    margin-top: 0.2em;
-    flex-shrink: 0;
-}
-
-/* Исправление для заголовков */
-.logo-title {
-    font-size: 2.5em;
-    font-weight: 800;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.3em;
-}
-
-.form-title {
-    font-size: 1.8em;
-    margin-bottom: 0.5em;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Улучшение контрастности для лучшей читаемости */
-.form-subtitle {
-    color: var(--text-gray);
-    margin-bottom: 2em;
-    font-size: 1em;
-}
-
-/* Исправление для вкладок */
-.auth-tabs {
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 5px;
-    margin-bottom: 2em;
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 1em;
-    font-size: 0.9em;
-    white-space: nowrap;
-}
-
-/* Улучшение сообщений */
-.message-box {
-    padding: 1em;
-    border-radius: 10px;
-    margin-top: 1.5em;
-    font-weight: 500;
-    animation: slideInUp 0.3s ease;
-}
-
-/* Исправление для статистики внизу */
-.system-stats {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2em;
-    padding-top: 1.5em;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-item {
-    text-align: center;
-    flex: 1;
-}
-
-.stat-item i {
-    font-size: 1.5em;
-    margin-bottom: 0.5em;
-    display: block;
-}
-
-.stat-label {
-    font-size: 0.8em;
-    color: var(--text-gray);
+@media (max-width: 480px) {
+    .neural-visualization {
+        height: 200px;
+    }
+    
+    .input-group input {
+        padding: 15px 15px 15px 45px;
+        font-size: 0.9rem;
+    }
+    
+    .submit-btn {
+        padding: 15px;
+        font-size: 1rem;
+    }
 }
