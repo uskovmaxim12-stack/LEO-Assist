@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo Assistant | Админ-панель</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <!-- Контейнер админки -->
+    <div class="admin-container">
+        
+        <!-- Боковое меню -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Админ-панель</h2>
+                <p>Leo Assistant 7Б</p>
+            </div>
+            
+            <!-- Меню навигации -->
+            <nav class="admin-nav">
+                <div class="nav-section">
+                    <h4>Основное</h4>
+                    <a href="#" class="nav-item active" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="users">
+                        <i class="fas fa-users"></i>
+                        <span>Пользователи</span>
+                        <span class="nav-badge" id="users-count">0</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="schedule">
+                        <i class="fas fa-calendar"></i>
+                        <span>Расписание</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h4>Контент</h4>
+                    <a href="#" class="nav-item" data-tab="tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Задания</span>
+                        <span class="nav-badge" id="tasks-count">0</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="content">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Материалы</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="announcements">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Объявления</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h4>AI Система</h4>
+                    <a href="#" class="nav-item" data-tab="ai-training">
+                        <i class="fas fa-brain"></i>
+                        <span>Обучение AI</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="knowledge-base">
+                        <i class="fas fa-database"></i>
+                        <span>База знаний</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="ai-settings">
+                        <i class="fas fa-cogs"></i>
+                        <span>Настройки AI</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h4>Аналитика</h4>
+                    <a href="#" class="nav-item" data-tab="statistics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Статистика</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="logs">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Логи системы</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="monitoring">
+                        <i class="fas fa-desktop"></i>
+                        <span>Мониторинг</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h4>Система</h4>
+                    <a href="#" class="nav-item" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Настройки</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="backup">
+                        <i class="fas fa-hdd"></i>
+                        <span>Резервные копии</span>
+                    </a>
+                    <a href="#" class="nav-item" data-tab="security">
+                        <i class="fas fa-lock"></i>
+                        <span>Безопасность</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Футер -->
+            <div class="admin-footer">
+                <div class="admin-user">
+                    <div class="user-avatar">АД</div>
+                    <div class="user-info">
+                        <div class="user-name">Администратор</div>
+                        <div class="user-role">Супер-админ</div>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn btn-icon" title="Обновить">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn btn-icon" title="Выйти" id="admin-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="admin-main">
+            <!-- Шапка -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="admin-title">Панель администратора</h1>
+                    <div class="breadcrumbs">
+                        <span class="crumb">Админ-панель</span>
+                        <span class="separator">/</span>
+                        <span class="crumb active">Главная</span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="system-status">
+                        <div class="status-item online">
+                            <i class="fas fa-server"></i>
+                            <span>Система</span>
+                        </div>
+                        <div class="status-item online">
+                            <i class="fas fa-database"></i>
+                            <span>База данных</span>
+                        </div>
+                        <div class="status-item online">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Система</span>
+                        </div>
+                    </div>
+                    <div class="quick-search">
+                        <input type="text" placeholder="Поиск в системе...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Вкладки контента -->
+            <div class="admin-content">
+                
+                <!-- Вкладка: ГЛАВНАЯ -->
+                <section id="tab-dashboard" class="admin-tab active">
+                    <div class="dashboard-stats">
+                        <div class="stat-card large">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="total-users">0</div>
+                                <div class="stat-label">Всего пользователей</div>
+                            </div>
+                            <div class="stat-trend up">+5%</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="active-users">0</div>
+                                <div class="stat-label">Активных</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-robot"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="ai-requests">0</div>
+                                <div class="stat-label">Запросов к AI</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="total-tasks">0</div>
+                                <div class="stat-label">Заданий</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- График активности -->
+                        <div class="dashboard-widget large">
+                            <div class="widget-header">
+                                <h3>Активность пользователей</h3>
+                                <select class="period-select">
+                                    <option>За сегодня</option>
+                                    <option>За неделю</option>
+                                    <option>За месяц</option>
+                                </select>
+                            </div>
+                            <div class="widget-content">
+                                <div class="chart-container">
+                                    <canvas id="activity-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Последние действия -->
+                        <div class="dashboard-widget">
+                            <div class="widget-header">
+                                <h3>Последние действия</h3>
+                                <button class="btn btn-sm">Все логи</button>
+                            </div>
+                            <div class="widget-content">
+                                <div class="activity-list" id="recent-activity">
+                                    <!-- Список действий -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Быстрые действия -->
+                        <div class="dashboard-widget">
+                            <div class="widget-header">
+                                <h3>Быстрые действия</h3>
+                            </div>
+                            <div class="widget-content">
+                                <div class="quick-actions-grid">
+                                    <button class="quick-action-btn" data-action="add-user">
+                                        <i class="fas fa-user-plus"></i>
+                                        <span>Добавить пользователя</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="add-schedule">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        <span>Добавить расписание</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="train-ai">
+                                        <i class="fas fa-brain"></i>
+                                        <span>Обучить AI</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="backup">
+                                        <i class="fas fa-save"></i>
+                                        <span>Создать бэкап</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="clear-cache">
+                                        <i class="fas fa-broom"></i>
+                                        <span>Очистить кэш</span>
+                                    </button>
+                                    <button class="quick-action-btn" data-action="system-check">
+                                        <i class="fas fa-stethoscope"></i>
+                                        <span>Проверка системы</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Вкладка: ПОЛЬЗОВАТЕЛИ -->
+                <section id="tab-users" class="admin-tab">
+                    <div class="tab-header">
+                        <h2>Управление пользователями</h2>
+                        <div class="tab-actions">
+                            <button class="btn btn-primary" id="add-user-btn">
+                                <i class="fas fa-user-plus"></i> Добавить пользователя
+                            </button>
+                            <button class="btn btn-secondary" id="import-users">
+                                <i class="fas fa-file-import"></i> Импорт
+                            </button>
+                            <button class="btn btn-secondary" id="export-users">
+                                <i class="fas fa-file-export"></i> Экспорт
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="users-container">
+                        <!-- Фильтры -->
+                        <div class="filters-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Поиск пользователей..." id="user-search">
+                            </div>
+                            <div class="filter-group">
+                                <select id="filter-role">
+                                    <option value="">Все роли</option>
+                                    <option value="student">Ученик</option>
+                                    <option value="teacher">Учитель</option>
+                                    <option value="admin">Администратор</option>
+                                </select>
+                                <select id="filter-status">
+                                    <option value="">Все статусы</option>
+                                    <option value="active">Активные</option>
+                                    <option value="inactive">Неактивные</option>
+                                    <option value="pending">Ожидают активации</option>
+                                </select>
+                                <select id="filter-class">
+                                    <option value="">Все классы</option>
+                                    <option value="7Б">7Б</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Таблица пользователей -->
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="select-all"></th>
+                                        <th>ID</th>
+                                        <th>ФИО</th>
+                                        <th>Логин</th>
+                                        <th>Роль</th>
+                                        <th>Класс</th>
+                                        <th>Очки</th>
+                                        <th>Статус</th>
+                                        <th>Дата регистрации</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- Данные загружаются через JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Пагинация -->
+                        <div class="pagination">
+                            <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                            <span class="page-info">Страница 1 из 1</span>
+                            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Вкладка: РАСПИСАНИЕ -->
+                <section id="tab-schedule" class="admin-tab">
+                    <div class="tab-header">
+                        <h2>Управление расписанием</h2>
+                        <div class="tab-actions">
+                            <button class="btn btn-primary" id="add-schedule-btn">
+                                <i class="fas fa-plus"></i> Добавить расписание
+                            </button>
+                            <button class="btn btn-secondary" id="import-schedule">
+                                <i class="fas fa-file-import"></i> Импорт Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-editor">
+                        <!-- Здесь будет редактор расписания -->
+                    </div>
+                </section>
+                
+                <!-- Вкладка: ОБУЧЕНИЕ AI -->
+                <section id="tab-ai-training" class="admin-tab">
+                    <div class="tab-header">
+                        <h2>Обучение нейросети</h2>
+                        <div class="tab-actions">
+                            <button class="btn btn-primary" id="train-ai-btn">
+                                <i class="fas fa-brain"></i> Начать обучение
+                            </button>
+                            <button class="btn btn-secondary" id="import-knowledge">
+                                <i class="fas fa-file-import"></i> Импорт базы знаний
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-training-container">
+                        <!-- Здесь будет интерфейс обучения AI -->
+                    </div>
+                </section>
+                
+                <!-- Остальные вкладки... -->
+                
+            </div>
+            
+            <!-- Системные уведомления -->
+            <div class="system-notifications">
+                <div class="notification success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Система работает стабильно</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Модальные окна -->
+    <div class="modal" id="user-modal">
+        <div class="modal-content large">
+            <h3>Добавление пользователя</h3>
+            <form id="user-form">
+                <!-- Форма добавления пользователя -->
+            </form>
+        </div>
+    </div>
+    
+    <!-- Скрипты -->
+    <script src="./js/app.js"></script>
+    <script src="./js/admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Инициализация админки
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminPanel();
+            
+            // Переключение вкладок
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tab = item.dataset.tab;
+                    
+                    // Обновляем активные элементы
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    
+                    item.classList.add('active');
+                    document.getElementById(`tab-${tab}`).classList.add('active');
+                    document.getElementById('admin-title').textContent = item.querySelector('span').textContent;
+                });
+            });
+            
+            // Выход из админки
+            document.getElementById('admin-logout').addEventListener('click', () => {
+                window.leoApp.logout();
+            });
+        });
+    </script>
+</body>
+</html>

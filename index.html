@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO ASSIST - Умный помощник для 7Б класса</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="./js/particles.min.js"></script>
+</head>
+<body>
+    <!-- Частицы на заднем плане -->
+    <div id="particles-js"></div>
+    
+    <!-- Главный контейнер -->
+    <div class="main-container">
+        <!-- Левый блок с нейросетью -->
+        <div class="left-section">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span class="logo-text">LEO ASSIST</span>
+                </div>
+                <div class="subtitle">Искусственный интеллект для обучения</div>
+            </div>
+            
+            <div class="neural-visualization">
+                <div class="neural-title">Нейронная сеть активна</div>
+                <div class="network-container">
+                    <!-- Слои нейронов -->
+                    <div class="layer">
+                        <div class="neuron active" data-tooltip="Входной слой"></div>
+                        <div class="neuron active" data-tooltip="Вход 1"></div>
+                        <div class="neuron active" data-tooltip="Вход 2"></div>
+                    </div>
+                    
+                    <div class="layer middle">
+                        <div class="neuron pulse" data-tooltip="Скрытый слой"></div>
+                        <div class="neuron pulse" data-tooltip="Анализ"></div>
+                        <div class="neuron pulse" data-tooltip="Обработка"></div>
+                    </div>
+                    
+                    <div class="layer">
+                        <div class="neuron active" data-tooltip="Выход"></div>
+                    </div>
+                    
+                    <!-- Соединения -->
+                    <svg class="connections" width="100%" height="100%">
+                        <!-- Соединения между слоями -->
+                        <line x1="20%" y1="30%" x2="45%" y2="25%" class="connection active"/>
+                        <line x1="20%" y1="50%" x2="45%" y2="50%" class="connection pulse"/>
+                        <line x1="20%" y1="70%" x2="45%" y2="75%" class="connection active"/>
+                        
+                        <line x1="45%" y1="25%" x2="70%" y2="50%" class="connection pulse"/>
+                        <line x1="45%" y1="50%" x2="70%" y2="50%" class="connection active"/>
+                        <line x1="45%" y1="75%" x2="70%" y2="50%" class="connection pulse"/>
+                    </svg>
+                </div>
+                
+                <div class="activity-indicator">
+                    <div class="dot active"></div>
+                    <div class="dot pulse"></div>
+                    <div class="dot active"></div>
+                    <span class="status-text">Обработка данных...</span>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>AI Помощник</h4>
+                        <p>Отвечает на вопросы и помогает с учебой</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Расписание</h4>
+                        <p>Актуальное расписание 7Б класса</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Обучающие игры</h4>
+                        <p>Развивающие игры для 7 класса</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Статистика</h4>
+                        <p>Отслеживание прогресса обучения</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Правый блок с формами -->
+        <div class="right-section">
+            <div class="auth-wrapper">
+                <div class="auth-header">
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" id="loginTab">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Вход</span>
+                        </button>
+                        <button class="tab-btn" id="registerTab">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Регистрация</span>
+                        </button>
+                        <button class="tab-btn admin" id="adminTab">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Админ</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Форма входа -->
+                <div class="auth-form active" id="loginForm">
+                    <div class="form-header">
+                        <h2>Вход в систему</h2>
+                        <p>Введите логин и пароль для доступа</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="loginUsername" placeholder="Логин" autocomplete="username">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            <span class="label">Запомнить меня</span>
+                        </label>
+                        <a href="#" class="forgot-link">Забыли пароль?</a>
+                    </div>
+                    
+                    <button class="submit-btn primary" id="loginBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Войти</span>
+                    </button>
+                    
+                    <div class="divider">
+                        <span>или</span>
+                    </div>
+                    
+                    <button class="submit-btn secondary demo-btn" id="demoLogin">
+                        <i class="fas fa-user-check"></i>
+                        <span>Демо-вход (тестовый доступ)</span>
+                    </button>
+                </div>
+                
+                <!-- Форма регистрации -->
+                <div class="auth-form" id="registerForm">
+                    <div class="form-header">
+                        <h2>Регистрация</h2>
+                        <p>Создайте новый аккаунт</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="registerFullName" placeholder="Фамилия и Имя">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-at"></i>
+                            <input type="text" id="registerUsername" placeholder="Логин">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Пароль">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerConfirm" placeholder="Повторите пароль">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group terms">
+                        <label class="checkbox">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <span class="checkmark"></span>
+                            <span class="label">Я согласен с <a href="#">правилами системы</a></span>
+                        </label>
+                    </div>
+                    
+                    <button class="submit-btn primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Зарегистрироваться</span>
+                    </button>
+                    
+                    <div class="form-note">
+                        <i class="fas fa-info-circle"></i>
+                        <p>После регистрации обратитесь к администратору для активации аккаунта</p>
+                    </div>
+                </div>
+                
+                <!-- Форма администратора -->
+                <div class="auth-form" id="adminForm">
+                    <div class="form-header">
+                        <h2>Административный доступ</h2>
+                        <p>Вход для учителей и администраторов</p>
+                    </div>
+                    
+                    <div class="admin-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Эта форма только для авторизованного персонала</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="adminKey" placeholder="Административный ключ">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="adminPassword" placeholder="Пароль администратора">
+                        </div>
+                    </div>
+                    
+                    <button class="submit-btn warning" id="adminBtn">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Войти в админ-панель</span>
+                    </button>
+                    
+                    <div class="admin-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Ключ по умолчанию: <code>7B_LEO_ADMIN_2024</code><br>
+                        Логин: <code>admin</code>, Пароль: <code>admin123</code></p>
+                    </div>
+                </div>
+                
+                <!-- Сообщения -->
+                <div id="messageBox" class="message-box"></div>
+                
+                <!-- Системная информация -->
+                <div class="system-info">
+                    <div class="info-item">
+                        <i class="fas fa-users"></i>
+                        <span>Онлайн: <strong id="onlineCount">0</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-server"></i>
+                        <span>Статус: <strong class="status-online">online</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Защищено</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Скрипты -->
+    <script src="./js/auth-system.js"></script>
+    <script>
+        // Инициализация частиц с вашими настройками
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: ["#00c6ff", "#0072ff", "#ff0080", "#00ff88"]
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00c6ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 3,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.8
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Переключение вкладок
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = {
+                loginTab: 'loginForm',
+                registerTab: 'registerForm',
+                adminTab: 'adminForm'
+            };
+            
+            Object.keys(tabs).forEach(tabId => {
+                document.getElementById(tabId).addEventListener('click', function() {
+                    // Скрываем все формы
+                    document.querySelectorAll('.auth-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    
+                    // Убираем активный класс у всех кнопок
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Показываем нужную форму
+                    document.getElementById(tabs[tabId]).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+            
+            // Показать/скрыть пароль
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                });
+            });
+            
+            // Демо-вход
+            document.getElementById('demoLogin').addEventListener('click', function() {
+                document.getElementById('loginUsername').value = 'demo';
+                document.getElementById('loginPassword').value = 'demo123';
+                document.getElementById('loginBtn').click();
+            });
+            
+            // Обновление счетчика онлайн
+            function updateOnlineCount() {
+                const users = JSON.parse(localStorage.getItem('leo_users') || '[]');
+                const activeUsers = users.filter(u => u.active).length;
+                document.getElementById('onlineCount').textContent = activeUsers;
+            }
+            
+            updateOnlineCount();
+            setInterval(updateOnlineCount, 30000);
+            
+            // Автофокус на поле ввода при переключении вкладок
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setTimeout(() => {
+                        const form = document.querySelector('.auth-form.active');
+                        const firstInput = form?.querySelector('input');
+                        if (firstInput) firstInput.focus();
+                    }, 100);
+                });
+            });
+            
+            // Enter для отправки форм
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const activeForm = document.querySelector('.auth-form.active');
+                    if (activeForm.id === 'loginForm') {
+                        document.getElementById('loginBtn').click();
+                    } else if (activeForm.id === 'registerForm') {
+                        document.getElementById('registerBtn').click();
+                    } else if (activeForm.id === 'adminForm') {
+                        document.getElementById('adminBtn').click();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
